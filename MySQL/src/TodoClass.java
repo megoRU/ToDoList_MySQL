@@ -1,7 +1,6 @@
-import java.util.ArrayList;
 import java.sql.*;
 import java.sql.PreparedStatement;
-
+import java.util.TreeMap;
 
 public class TodoClass {
 
@@ -10,11 +9,17 @@ public class TodoClass {
   public final String COMMAND_EDIT = "EDIT\\s+\\d+\\s+.+";
   public final String COMMAND_DELETE = "DELETE\\s+\\d+";
   public final String COMMAND_LIST = "LIST";
-  private ArrayList<String> todoList = new ArrayList<>();
+
+  private TreeMap<String, String> todoList = new TreeMap<>();
 
   /**
-   * Заменить данные на свои; CONN = "jdbc:mysql://ip_adress_or_domain:3306/BD_name"; USER =
-   * "BD_name"; PASS = "Password"; SQL База данных которую можно просто импортировать:
+   * Заменить данные на свои; CONN = "jdbc:mysql://ip_adress_or_domain:3306/BD_name";
+   * 
+   * USER = "BD_name";
+   *
+   * PASS = "Password";
+   *
+   * SQL База данных которую можно просто импортировать:
    **/
 
   private static final String CONN = "";
@@ -162,6 +167,7 @@ public class TodoClass {
           String id = rs.getString("id");
           String text = rs.getString("text");
           //Вывод данных
+          todoList.put(id, text);
           System.out.print("\n" + id + ". " + text);
         }
         System.out.println();
