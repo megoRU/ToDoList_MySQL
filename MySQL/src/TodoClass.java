@@ -8,17 +8,18 @@ public class TodoClass {
   public final String COMMAND_ADD_TO_INDEX = "ADD\\s+\\d+\\s+.+";
   public final String COMMAND_EDIT = "EDIT\\s+\\d+\\s+.+";
   public final String COMMAND_DELETE = "DELETE\\s+\\d+";
+  public final String COMMAND_DELETE_ALL = "DELETEALL";
   public final String COMMAND_LIST = "LIST";
 
   private TreeMap<String, String> todoList = new TreeMap<>();
 
   /**
-   * Заменить данные на свои; CONN = "jdbc:mysql://ip_adress_or_domain:3306/BD_name";
-   * 
+   * db3.myarena.ru Заменить данные на свои; CONN = "jdbc:mysql://ip_adress_or_domain:3306/BD_name";
+   * <p>
    * USER = "BD_name";
-   *
+   * <p>
    * PASS = "Password";
-   *
+   * <p>
    * SQL База данных которую можно просто импортировать:
    **/
 
@@ -91,14 +92,17 @@ public class TodoClass {
 
     if (addToIndex == 0) {
       System.out.println("Индекс не может быть нулём!");
-    } else {
+    }
+    if (addToIndex >= num())
+    {
+    int addToIndex2 = addToIndex + 1;
       try {
         Class.forName("com.mysql.jdbc.Driver");
         Connection conn = DriverManager.getConnection(CONN, USER, PASS);
         //Получаем данные
         String query = "INSERT INTO Todolist (id, text)" + " values (?, ?)";
         PreparedStatement preparedStmt = conn.prepareStatement(query);
-        preparedStmt.setInt(1, addToIndex);
+        preparedStmt.setInt(1, addToIndex2);
         preparedStmt.setString(2, todoTextAddToIndex);
         // Записываем все данные в Базу Данных
         preparedStmt.execute();
@@ -133,6 +137,23 @@ public class TodoClass {
     }
   }
 
+  public void deleteAll(String command) {
+    if (command.equals(COMMAND_DELETE_ALL)) {
+      try {
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection conn = DriverManager.getConnection(CONN, USER, PASS);
+        String query3 = "DELETE FROM Todolist WHERE id";
+        PreparedStatement preparedStmt = conn.prepareStatement(query3);
+        preparedStmt.executeUpdate(query3);
+        System.err.println("Заметки удалены!");
+        conn.close();
+      } catch (Exception e) {
+        System.err.println("Получена ошибка!");
+        System.err.println(e.getMessage());
+      }
+    }
+  }
+
   public void delete(String command) {
     String todoTextDelete = command.replaceAll("[^0-9]", "").trim();
     int indexRemove = Integer.parseInt(todoTextDelete);
@@ -143,7 +164,7 @@ public class TodoClass {
       PreparedStatement preparedStmt = conn.prepareStatement(query3);
       preparedStmt.setInt(1, indexRemove);
       preparedStmt.executeUpdate();
-      System.err.println("Заметка удалена");
+      System.err.println("Заметка удалена!");
       conn.close();
     } catch (Exception e) {
       System.err.println("Получена ошибка!");
@@ -160,7 +181,7 @@ public class TodoClass {
         Connection conn = DriverManager.getConnection(CONN, USER, PASS);
         //Получаем данные и выводим
         Statement statement = conn.createStatement();
-        String sql = "SELECT id, text FROM Todolist";
+        String sql = "SELECT id, text FROM Todolist ORDER BY id ASC";
         ResultSet rs = statement.executeQuery(sql);
         System.err.print("Список всех заметок: ");
         while (rs.next()) {

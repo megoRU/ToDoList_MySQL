@@ -25,6 +25,10 @@ public class Main
         {
           todoClass.add(input);
         }
+        else if (input.matches(todoClass.COMMAND_DELETE_ALL))
+        {
+          todoClass.deleteAll(input);
+        }
         else if (input.matches(todoClass.COMMAND_EDIT))
         {
           todoClass.edit(input);
