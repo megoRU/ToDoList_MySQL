@@ -78,7 +78,6 @@ public class Main {
         {
           todoClass.dropTable(input);
         }
-
         else if (input.matches(todoClass.COMMAND_LIST))
         {
           todoClass.list(input);

@@ -64,6 +64,7 @@ public class TodoClass {
     }
   }
 
+  //Создаем таблицу
   public void getCreateTable() {
     createTable();
   }
