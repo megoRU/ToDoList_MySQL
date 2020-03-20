@@ -74,12 +74,10 @@ public class Main {
         {
           todoClass.list(input);
         }
-        
         else if (input.matches(todoClass.COMMAND_DELETE_BD))
         {
           todoClass.dropTable(input);
         }
-
         else if (input.matches(todoClass.COMMAND_LIST))
         {
           todoClass.list(input);
