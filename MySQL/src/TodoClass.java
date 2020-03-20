@@ -30,12 +30,12 @@ public class TodoClass {
    * SQL База данных которую можно просто импортировать:
    **/
 
-  private static final String CONN = "jdbc:mysql://:3306/";
-  private static final String USER = "";
-  private static final String PASS = "";
+  private static final String CONN = "jdbc:mysql://db3.myarena.ru:3306/u2864_skillbox2";
+  private static final String USER = "u2864_skillbox2";
+  private static final String PASS = "9S7j1D0b";
   private static final String SQL_DROP_TABLE = "DROP TABLE Todolist";
 
-  private static final String SQL_CREATE = "CREATE TABLE IF NOT EXISTS Todolist "
+  private static final String SQL_CREATE = "CREATE TABLE IF NOT EXISTS Todolist"
       + "("
       + " id int(6) NOT NULL AUTO_INCREMENT,"
       + " text varchar(128) NOT NULL,"

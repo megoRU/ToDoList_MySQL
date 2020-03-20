@@ -74,7 +74,6 @@ public class Main {
         {
           todoClass.list(input);
         }
-        
         else if (input.matches(todoClass.COMMAND_DELETE_BD))
         {
           todoClass.dropTable(input);
