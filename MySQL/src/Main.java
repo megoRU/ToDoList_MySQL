@@ -5,26 +5,9 @@ public class Main {
 
   public static void main(String[] args) throws Exception {
     {
-      System.err.print("Доступные команды:");
-      System.err.print(""
-          + "\nADD, "
-          + "ADD Index, "
-          + "EDIT Index, "
-          + "DELETE index, "
-          + "DELETEALL, "
-          + "LIST");
-      System.err.print(""
-          + "\nадд, "
-          + "адд индекс, "
-          + "изменить индекс, "
-          + "удалить индекс, "
-          + "удалить все, "
-          + "лист");
-      System.err.println(""
-          + "\nP. S. Index/индекс = цифра");
-
       BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
       TodoClass todoClass = new TodoClass();
+      todoClass.availableCommands();
       todoClass.getCreateTable();
 
       for (; ; ) {
@@ -33,6 +16,10 @@ public class Main {
         if (input.matches(todoClass.COMMAND_ADD_TO_INDEX))
         {
           todoClass.addToIndex(input);
+        }
+        if (input.matches(todoClass.ALL_LETTERS_AND_NUMBERS))
+        {
+          todoClass.addText(input);
         }
         else if (input.matches(todoClass.COMMAND_ADD_TO_INDEX_RU))
         {
@@ -62,6 +49,10 @@ public class Main {
         {
           todoClass.deleteByIndex(input);
         }
+        else if (input.matches(todoClass.COMMAND_DEL))
+        {
+          todoClass.deleteByIndex(input);
+        }
         else if (input.matches(todoClass.COMMAND_EDIT_RU))
         {
           todoClass.editByIndex(input);
@@ -72,17 +63,17 @@ public class Main {
         }
         else if (input.matches(todoClass.COMMAND_LIST_RU))
         {
-          todoClass.list(input);
+          todoClass.list();
         }
         else if (input.matches(todoClass.COMMAND_DELETE_BD))
         {
-          todoClass.dropTable(input);
+          todoClass.getDropTable();
         }
         else if (input.matches(todoClass.COMMAND_LIST))
         {
-          todoClass.list(input);
+          todoClass.list();
         } else {
-          System.out.println("Команда не распознана");
+          todoClass.availableCommands();
         }
       }
     }
