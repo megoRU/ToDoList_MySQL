@@ -1,3 +1,6 @@
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -22,6 +25,16 @@ class Main extends JFrame {
 
   public Main() {
     initComponents();
+    Toolkit toolkit = Toolkit.getDefaultToolkit();
+    Dimension screenSize = toolkit.getScreenSize();
+    JFrame frame = new JFrame("Demo");
+    frame.setSize(550, 600);
+    //Calculate the frame location
+    int x = (screenSize.width - frame.getWidth()) / 2;
+    int y = (screenSize.height - frame.getHeight()) / 2;
+    //Set the new frame location
+    frame.setLocation(x, y);
+    setLocation(x, y);
     list();
     super.setTitle("Список дел на Java");
   }
@@ -128,10 +141,10 @@ class Main extends JFrame {
     // jTextPane1.setToolTipText("");
     jScrollPane2.setViewportView(jTextPane1);
 
-    jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+    jLabel1.setFont(new java.awt.Font("Tahoma", Font.PLAIN, 14)); // NOI18N
     jLabel1.setText("Вывод всех заметок:");
 
-    jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+    jLabel2.setFont(new java.awt.Font("Tahoma", Font.PLAIN, 14)); // NOI18N
     jLabel2.setText("Поле ввода:");
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -186,20 +199,20 @@ class Main extends JFrame {
     pack();
   }// </editor-fold>
 
-  private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
-    // отправить
+//  private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+//    // отправить
+//
+//  }
 
-  }
-
-  private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
+  private void jButton2ActionPerformed(ActionEvent evt) {
     //список дел
     list();
   }
 
-  private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
-    // очистка
-
-  }
+//  private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
+//    // очистка
+//
+//  }
 
   public int num() {
     try {
@@ -247,16 +260,7 @@ class Main extends JFrame {
     }
   }
 
-
-  /**
-   * @param args the command line arguments
-   */
   public static void main(String[] args) {
-    /* Set the Nimbus look and feel */
-    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-    /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-     * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-     */
     try {
       for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager
           .getInstalledLookAndFeels()) {
@@ -269,17 +273,11 @@ class Main extends JFrame {
       java.util.logging.Logger.getLogger(Main.class.getName())
           .log(java.util.logging.Level.SEVERE, null, ex);
     }
-    //</editor-fold>
 
-    /* Create and display the form */
     java.awt.EventQueue.invokeLater(new Runnable() {
       public void run() {
         new Main().setVisible(true);
       }
     });
   }
-
-  // Variables declaration - do not modify
-
-  // End of variables declaration
 }
