@@ -16,10 +16,7 @@ class Main extends JFrame {
   private static final String USER = "u2864_skillbox2";
   private static final String PASS = "9S7j1D0b";
 
-//  JTextField input = new JTextField("", 5);
-//  JTextField outPut = new JTextField("", 5);
-  // JButton button = new JButton("Отправить");
-  // private String Null;
+  private javax.swing.JTextArea jTextArea1;
 
   public TodoClass todoClass = new TodoClass();
 
@@ -30,17 +27,16 @@ class Main extends JFrame {
   }
 
 
-  @SuppressWarnings("unchecked")
   // <editor-fold defaultstate="collapsed" desc="Generated Code">
   private void initComponents() {
 
-    jButton1 = new javax.swing.JButton();
-    jScrollPane1 = new javax.swing.JScrollPane();
+    javax.swing.JButton jButton1 = new javax.swing.JButton();
+    JScrollPane jScrollPane1 = new JScrollPane();
     jTextArea1 = new javax.swing.JTextArea();
-    jButton2 = new javax.swing.JButton();
-    jButton3 = new javax.swing.JButton();
+    javax.swing.JButton jButton2 = new javax.swing.JButton();
+    javax.swing.JButton jButton3 = new javax.swing.JButton();
     JScrollPane jScrollPane2 = new JScrollPane();
-    jTextPane1 = new javax.swing.JTextPane();
+    javax.swing.JTextPane jTextPane1 = new javax.swing.JTextPane();
 
     JTextField jTextField1 = new JTextField();
     JLabel jLabel1 = new JLabel();
@@ -270,7 +266,7 @@ class Main extends JFrame {
         }
       }
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-      java.util.logging.Logger.getLogger(NewJFrame.class.getName())
+      java.util.logging.Logger.getLogger(Main.class.getName())
           .log(java.util.logging.Level.SEVERE, null, ex);
     }
     //</editor-fold>
@@ -278,18 +274,12 @@ class Main extends JFrame {
     /* Create and display the form */
     java.awt.EventQueue.invokeLater(new Runnable() {
       public void run() {
-        new NewJFrame().setVisible(true);
+        new Main().setVisible(true);
       }
     });
   }
 
   // Variables declaration - do not modify
-  private javax.swing.JButton jButton1;
-  private javax.swing.JButton jButton2;
-  private javax.swing.JButton jButton3;
-  private javax.swing.JScrollPane jScrollPane1;
-  private javax.swing.JTextArea jTextArea1;
-  private javax.swing.JTextPane jTextPane1;
 
   // End of variables declaration
 }
