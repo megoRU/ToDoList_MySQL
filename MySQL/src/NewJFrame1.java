@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -44,9 +45,14 @@ class NewJFrame extends JFrame {
     JScrollPane jScrollPane2 = new JScrollPane();
     jTextPane1 = new javax.swing.JTextPane();
 
+    JTextField jTextField1 = new JTextField();
+    JLabel jLabel1 = new JLabel();
+    JLabel jLabel2 = new JLabel();
+
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+    jTextArea1.setEditable(false);
     jTextArea1.setColumns(20);
     jTextArea1.setRows(5);
     jScrollPane1.setViewportView(jTextArea1);
@@ -58,11 +64,11 @@ class NewJFrame extends JFrame {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         //  jButton3ActionPerformed(evt);
         //jTextArea1.add(input);
-        if (jTextArea1.getText().equals(""))
+        if (jTextField1.getText().equals(""))
         {
           System.err.println("Should not be NULL");
         }
-        if (!jTextPane1.getText().equals("")) {
+        if (!jTextField1.getText().equals("")) {
           try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(CONN, USER, PASS);
@@ -72,7 +78,7 @@ class NewJFrame extends JFrame {
             String query = "INSERT INTO Todolist (id, text, time)" + " values (?, ?, ?)";
             PreparedStatement preparedStmt = conn.prepareStatement(query);
             preparedStmt.setInt(1, num() + 1); // Получаем "длину" таблицы и прибавляем 1
-            preparedStmt.setString(2, jTextPane1.getText());
+            preparedStmt.setString(2, jTextField1.getText());
             preparedStmt.setString(3, dateADD);
 
             preparedStmt.execute(); //Записываем данные в БД
@@ -106,42 +112,57 @@ class NewJFrame extends JFrame {
    // jTextPane1.setToolTipText("");
   jScrollPane2.setViewportView(jTextPane1);
 
+    jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+    jLabel1.setText("Вывод всех заметок:");
+
+    jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+    jLabel2.setText("Поле ввода:");
+
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
     getContentPane().setLayout(layout);
     layout.setHorizontalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jTextField1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton3)
-                        .addGap(0, 358, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton3)))
+                        .addGap(0, 344, Short.MAX_VALUE)))
                 .addContainerGap())
     );
     layout.setVerticalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(4, 4, 4)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(jButton3))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
-                .addContainerGap(84, Short.MAX_VALUE))
+                .addGap(8, 8, 8)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addContainerGap(47, Short.MAX_VALUE))
     );
 
     pack();
-  }// </editor-fold>
+  }// </editor-fold>  
 
 
 //   class ButtonEventListener implements ActionListener {
