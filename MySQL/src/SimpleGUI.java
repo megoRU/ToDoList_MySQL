@@ -55,7 +55,7 @@ public class SimpleGUI extends JFrame {
   //  radio1.setSelected(true);
   //  container.add(radio2);
 //    container.add(check);
-    button.addActionListener(new ButtonEventListener());
+ //   button.addActionListener(new ButtonEventListener());
     container.add(button);
   }
 
@@ -73,28 +73,28 @@ public class SimpleGUI extends JFrame {
     return 0;
   }
 
-  class ButtonEventListener implements ActionListener {
-    public void actionPerformed(ActionEvent e) {
-
-      try {
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(CONN, USER, PASS);
-        Date dateNow = new Date();
-        SimpleDateFormat formatForDateNow = new SimpleDateFormat("dd.MM.yyyy '|' HH:mm:ss");
-        String dateADD = formatForDateNow.format(dateNow);
-        String query = "INSERT INTO Todolist (id, text, time)" + " values (?, ?, ?)";
-        PreparedStatement preparedStmt = conn.prepareStatement(query);
-        preparedStmt.setInt(1, num() + 1); // Получаем "длину" таблицы и прибавляем 1
-        preparedStmt.setString(2, input.getText());
-        preparedStmt.setString(3, dateADD);
-
-        preparedStmt.execute(); //Записываем данные в БД
-        System.err.println("Заметка сохранена!");
-        input.setText("");
-        conn.close();
-      } catch (Exception ex) {
-        System.err.println(ex.getMessage());
-      }
+//  class ButtonEventListener implements ActionListener {
+//    public void actionPerformed(ActionEvent e) {
+//
+//      try {
+//        Class.forName("com.mysql.jdbc.Driver");
+//        Connection conn = DriverManager.getConnection(CONN, USER, PASS);
+//        Date dateNow = new Date();
+//        SimpleDateFormat formatForDateNow = new SimpleDateFormat("dd.MM.yyyy '|' HH:mm:ss");
+//        String dateADD = formatForDateNow.format(dateNow);
+//        String query = "INSERT INTO Todolist (id, text, time)" + " values (?, ?, ?)";
+//        PreparedStatement preparedStmt = conn.prepareStatement(query);
+//        preparedStmt.setInt(1, num() + 1); // Получаем "длину" таблицы и прибавляем 1
+//        preparedStmt.setString(2, input.getText());
+//        preparedStmt.setString(3, dateADD);
+//
+//        preparedStmt.execute(); //Записываем данные в БД
+//        System.err.println("Заметка сохранена!");
+//        input.setText("");
+//        conn.close();
+//      } catch (Exception ex) {
+//        System.err.println(ex.getMessage());
+//      }
 
 
 //      String message = "";
@@ -109,8 +109,8 @@ public class SimpleGUI extends JFrame {
 //          message,
 //          "Output",
 //          JOptionPane.PLAIN_MESSAGE);
-    }
-  }
+//    }
+//  }
 
   public static void main(String[] args) {
     SimpleGUI app = new SimpleGUI();

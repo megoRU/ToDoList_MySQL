@@ -20,10 +20,10 @@ class NewJFrame extends JFrame {
   private static final String USER = "u2864_skillbox2";
   private static final String PASS = "9S7j1D0b";
 
-
   JTextField input = new JTextField("", 5);
   JTextField outPut = new JTextField("", 5);
   JButton button = new JButton("Отправить");
+  private String Null;
 
 
   public NewJFrame() {
@@ -31,9 +31,6 @@ class NewJFrame extends JFrame {
     super.setTitle("Список дел на Java");
   }
 
-  /**
-   *
-   */
 
   @SuppressWarnings("unchecked")
   // <editor-fold defaultstate="collapsed" desc="Generated Code">
@@ -47,6 +44,7 @@ class NewJFrame extends JFrame {
     JScrollPane jScrollPane2 = new JScrollPane();
     jTextPane1 = new javax.swing.JTextPane();
 
+
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
     jTextArea1.setColumns(20);
@@ -54,29 +52,38 @@ class NewJFrame extends JFrame {
     jScrollPane1.setViewportView(jTextArea1);
 
     jButton1.setText("Отправить");
+   // jButton1.addActionListener(new ButtonEventListener());
+
     jButton1.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
-        jButton3ActionPerformed(evt);
-       // jScrollPane1.add(input);
-        try {
-          Class.forName("com.mysql.jdbc.Driver");
-          Connection conn = DriverManager.getConnection(CONN, USER, PASS);
-          Date dateNow = new Date();
-          SimpleDateFormat formatForDateNow = new SimpleDateFormat("dd.MM.yyyy '|' HH:mm:ss");
-          String dateADD = formatForDateNow.format(dateNow);
-          String query = "INSERT INTO Todolist (id, text, time)" + " values (?, ?, ?)";
-          PreparedStatement preparedStmt = conn.prepareStatement(query);
-          preparedStmt.setInt(1, num() + 1); // Получаем "длину" таблицы и прибавляем 1
-          preparedStmt.setString(2, String.valueOf(jTextPane1));
-          preparedStmt.setString(3, dateADD);
-
-          preparedStmt.execute(); //Записываем данные в БД
-          System.err.println("Заметка сохранена!");
-          conn.close();
-        } catch (Exception e) {
-          System.err.println(e.getMessage());
+        //  jButton3ActionPerformed(evt);
+        //jTextArea1.add(input);
+        if (jTextArea1.getText().equals(""))
+        {
+          System.err.println("Should not be NULL");
         }
-       // String input = evt;
+        if (!jTextPane1.getText().equals("")) {
+          try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(CONN, USER, PASS);
+            Date dateNow = new Date();
+            SimpleDateFormat formatForDateNow = new SimpleDateFormat("dd.MM.yyyy '|' HH:mm:ss");
+            String dateADD = formatForDateNow.format(dateNow);
+            String query = "INSERT INTO Todolist (id, text, time)" + " values (?, ?, ?)";
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            preparedStmt.setInt(1, num() + 1); // Получаем "длину" таблицы и прибавляем 1
+            preparedStmt.setString(2, jTextPane1.getText());
+            preparedStmt.setString(3, dateADD);
+
+            preparedStmt.execute(); //Записываем данные в БД
+            jTextPane1.setText("");
+            System.err.println("Заметка сохранена!");
+            conn.close();
+          } catch (Exception e) {
+            System.err.println(e.getMessage());
+          }
+          // String input = evt;
+        }
       }
     });
 
@@ -90,13 +97,13 @@ class NewJFrame extends JFrame {
     jButton3.setText("Очистка");
     jButton3.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e){
-        jTextArea1.setText("");
-        jButton1ActionPerformed(e);
+         jTextArea1.setText("");
+    //    jButton1ActionPerformed(e);
         //textfield.setText(null); //or use this
       }
     });
 
-    jTextPane1.setToolTipText("");
+   // jTextPane1.setToolTipText("");
   jScrollPane2.setViewportView(jTextPane1);
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -136,18 +143,44 @@ class NewJFrame extends JFrame {
     pack();
   }// </editor-fold>
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
-      // удалить
 
-    }
+//   class ButtonEventListener implements ActionListener {
+//     public void actionPerformed(ActionEvent e) {
+//
+//       try {
+//         Class.forName("com.mysql.jdbc.Driver");
+//         Connection conn = DriverManager.getConnection(CONN, USER, PASS);
+//         Date dateNow = new Date();
+//         SimpleDateFormat formatForDateNow = new SimpleDateFormat("dd.MM.yyyy '|' HH:mm:ss");
+//         String dateADD = formatForDateNow.format(dateNow);
+//         String query = "INSERT INTO Todolist (id, text, time)" + " values (?, ?, ?)";
+//         PreparedStatement preparedStmt = conn.prepareStatement(query);
+//         preparedStmt.setInt(1, num() + 1); // Получаем "длину" таблицы и прибавляем 1
+//         preparedStmt.setString(2, jTextPane1.getText());
+//         preparedStmt.setString(3, dateADD);
+//
+//         preparedStmt.execute(); //Записываем данные в БД
+//         System.err.println("Заметка сохранена!");
+//         jTextPane1.setText("");
+//         conn.close();
+//       } catch (Exception ex) {
+//         System.err.println(ex.getMessage());
+//       }
+//     }
+//   }
+
+//    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+//      // отправить
+//
+//    }
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
       //список дел
       list();
     }
 
-   private void jButton3ActionPerformed(ActionEvent evt) {
-     // Отправить
+   private void jButton3ActionPerformed (java.awt.event.ActionEvent evt) {
+     // очистка
 
    }
 
@@ -166,28 +199,28 @@ class NewJFrame extends JFrame {
   }
 
   //class ButtonEventListener implements ActionListener {
-    public void actionPerformed(ActionEvent e) {
-
-      try {
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(CONN, USER, PASS);
-        Date dateNow = new Date();
-        SimpleDateFormat formatForDateNow = new SimpleDateFormat("dd.MM.yyyy '|' HH:mm:ss");
-        String dateADD = formatForDateNow.format(dateNow);
-        String query = "INSERT INTO Todolist (id, text, time)" + " values (?, ?, ?)";
-        PreparedStatement preparedStmt = conn.prepareStatement(query);
-        preparedStmt.setInt(1, num() + 1); // Получаем "длину" таблицы и прибавляем 1
-        preparedStmt.setString(2, input.getText());
-        preparedStmt.setString(3, dateADD);
-
-        preparedStmt.execute(); //Записываем данные в БД
-        System.err.println("Заметка сохранена!");
-        input.setText("");
-        conn.close();
-      } catch (Exception ex) {
-        System.err.println(ex.getMessage());
-      }
-  }
+//    public void actionPerformed(ActionEvent e) {
+//
+//      try {
+//        Class.forName("com.mysql.jdbc.Driver");
+//        Connection conn = DriverManager.getConnection(CONN, USER, PASS);
+//        Date dateNow = new Date();
+//        SimpleDateFormat formatForDateNow = new SimpleDateFormat("dd.MM.yyyy '|' HH:mm:ss");
+//        String dateADD = formatForDateNow.format(dateNow);
+//        String query = "INSERT INTO Todolist (id, text, time)" + " values (?, ?, ?)";
+//        PreparedStatement preparedStmt = conn.prepareStatement(query);
+//        preparedStmt.setInt(1, num() + 1); // Получаем "длину" таблицы и прибавляем 1
+//        preparedStmt.setString(2, input.getText());
+//        preparedStmt.setString(3, dateADD);
+//
+//        preparedStmt.execute(); //Записываем данные в БД
+//        System.err.println("Заметка сохранена!");
+//        input.setText("");
+//        conn.close();
+//      } catch (Exception ex) {
+//        System.err.println(ex.getMessage());
+//      }
+//  }
 
   public void list() {
     jTextArea1.setText("");
