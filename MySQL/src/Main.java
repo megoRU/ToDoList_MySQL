@@ -39,8 +39,6 @@ class Main extends JFrame {
     super.setTitle("Список дел на Java");
   }
 
-
-  // <editor-fold defaultstate="collapsed" desc="Generated Code">
   private void initComponents() {
 
     javax.swing.JButton jButton1 = new javax.swing.JButton();
@@ -228,10 +226,10 @@ class Main extends JFrame {
     return 0;
   }
 
-
   public void list() {
     jTextArea1.setText("");
     if (num() == 0) {
+      jTextArea1.setText("Заметок нет!");
       System.err.println("Заметок нет!");
     } else {
       try {
