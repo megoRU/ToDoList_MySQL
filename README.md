@@ -14,7 +14,7 @@
 * P. S.2 Если слово начинается с большой буквы, то комманду писать не нужно!
 
 
-## If you want use your MySQL candge this
+## If you want use your MySQL change this
 
 *  private static final String CONN = "jdbc:mysql://ip:3306/DB_NAME?useSSL=false";
 *  private static final String USER = "DB_NAME";
