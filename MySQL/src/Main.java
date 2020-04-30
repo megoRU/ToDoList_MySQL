@@ -3,10 +3,13 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -24,6 +27,7 @@ class Main extends JFrame {
   public TodoClass todoClass = new TodoClass();
 
   public Main() {
+    todoClass.getCreateTable();
     initComponents();
     Toolkit toolkit = Toolkit.getDefaultToolkit();
     Dimension screenSize = toolkit.getScreenSize();
@@ -46,6 +50,7 @@ class Main extends JFrame {
     jTextArea1 = new javax.swing.JTextArea();
     javax.swing.JButton jButton2 = new javax.swing.JButton();
     javax.swing.JButton jButton3 = new javax.swing.JButton();
+    javax.swing.JButton jButton4 = new javax.swing.JButton();
     JScrollPane jScrollPane2 = new JScrollPane();
     javax.swing.JTextPane jTextPane1 = new javax.swing.JTextPane();
 
@@ -61,65 +66,157 @@ class Main extends JFrame {
     jScrollPane1.setViewportView(jTextArea1);
 
     jButton1.setText("Отправить");
-    // jButton1.addActionListener(new ButtonEventListener());
+
+    Action action = new AbstractAction()
+    {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        jTextField1.getText();
+        try {
+          if (jTextField1.getText().equals("")) {
+            System.err.println("Should not be NULL");
+          }
+          String inputLine = jTextField1.getText();
+          if (!jTextField1.getText().equals("")) {
+
+            if (inputLine.matches(todoClass.COMMAND_ADD_TO_INDEX)) {
+              todoClass.addToIndex(inputLine);
+              list();
+              jTextField1.setText("");
+            }
+            if (inputLine.matches(todoClass.ALL_LETTERS_AND_NUMBERS)) {
+              todoClass.addText(inputLine);
+              list();
+              jTextField1.setText("");
+            } else if (inputLine.matches(todoClass.COMMAND_ADD_TO_INDEX_RU)) {
+              todoClass.addToIndex(inputLine);
+              list();
+            } else if (inputLine.matches(todoClass.COMMAND_ADD)) {
+              todoClass.add(inputLine);
+              list();
+              jTextField1.setText("");
+            } else if (inputLine.matches(todoClass.COMMAND_ADD_RU)) {
+              todoClass.add(inputLine);
+              list();
+              jTextField1.setText("");
+            } else if (inputLine.matches(todoClass.COMMAND_DELETE_ALL_RU)) {
+              todoClass.deleteAll(inputLine);
+              list();
+              jTextField1.setText("");
+            } else if (inputLine.matches(todoClass.COMMAND_DELETE_ALL)) {
+              todoClass.deleteAll(inputLine);
+              list();
+              jTextField1.setText("");
+            } else if (inputLine.matches(todoClass.COMMAND_EDIT)) {
+              todoClass.editByIndex(inputLine);
+              list();
+              jTextField1.setText("");
+            } else if (inputLine.matches(todoClass.COMMAND_DELETE)) {
+              todoClass.deleteByIndex(inputLine);
+              list();
+              jTextField1.setText("");
+            } else if (inputLine.matches(todoClass.COMMAND_DEL)) {
+              todoClass.deleteByIndex(inputLine);
+              list();
+              jTextField1.setText("");
+            } else if (inputLine.matches(todoClass.COMMAND_EDIT_RU)) {
+              todoClass.editByIndex(inputLine);
+              list();
+              jTextField1.setText("");
+            } else if (inputLine.matches(todoClass.COMMAND_DELETE_RU)) {
+              todoClass.deleteByIndex(inputLine);
+              list();
+              jTextField1.setText("");
+            } else if (inputLine.matches(todoClass.COMMAND_DELETE_BD)) {
+              todoClass.getDropTable();
+              list();
+              jTextField1.setText("");
+            }
+            else {
+              jTextArea1.setText("Скорее всего произошла ошибка." + "\n" + "Вы написали все с маленькой бувы");
+            }
+          }
+        } catch (Exception ee) {
+          ee.printStackTrace();
+        }
+      }
+    };
+    jTextField1.addActionListener(action);
 
     jButton1.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         //  jButton3ActionPerformed(evt);
         //jTextArea1.add(input);
-        if (jTextField1.getText().equals("")) {
-          System.err.println("Should not be NULL");
-        }
-        String input = jTextField1.getText();
-        if (!jTextField1.getText().equals("")) {
-          try {
+        try {
+          if (jTextField1.getText().equals("")) {
+            System.err.println("Should not be NULL");
+          }
+          String input = jTextField1.getText();
+          if (!jTextField1.getText().equals("")) {
             if (input.matches(todoClass.COMMAND_ADD_TO_INDEX)) {
               todoClass.addToIndex(input);
+              list();
               jTextField1.setText("");
             }
             if (input.matches(todoClass.ALL_LETTERS_AND_NUMBERS)) {
               todoClass.addText(input);
+              list();
               jTextField1.setText("");
             } else if (input.matches(todoClass.COMMAND_ADD_TO_INDEX_RU)) {
               todoClass.addToIndex(input);
+              list();
+              jTextField1.setText("");
             } else if (input.matches(todoClass.COMMAND_ADD)) {
               todoClass.add(input);
+              list();
               jTextField1.setText("");
             } else if (input.matches(todoClass.COMMAND_ADD_RU)) {
               todoClass.add(input);
+              list();
               jTextField1.setText("");
             } else if (input.matches(todoClass.COMMAND_DELETE_ALL_RU)) {
               todoClass.deleteAll(input);
+              list();
               jTextField1.setText("");
             } else if (input.matches(todoClass.COMMAND_DELETE_ALL)) {
               todoClass.deleteAll(input);
+              list();
               jTextField1.setText("");
             } else if (input.matches(todoClass.COMMAND_EDIT)) {
               todoClass.editByIndex(input);
+              list();
               jTextField1.setText("");
             } else if (input.matches(todoClass.COMMAND_DELETE)) {
               todoClass.deleteByIndex(input);
+              list();
               jTextField1.setText("");
             } else if (input.matches(todoClass.COMMAND_DEL)) {
               todoClass.deleteByIndex(input);
+              list();
               jTextField1.setText("");
             } else if (input.matches(todoClass.COMMAND_EDIT_RU)) {
               todoClass.editByIndex(input);
+              list();
               jTextField1.setText("");
             } else if (input.matches(todoClass.COMMAND_DELETE_RU)) {
               todoClass.deleteByIndex(input);
+              list();
               jTextField1.setText("");
             } else if (input.matches(todoClass.COMMAND_DELETE_BD)) {
               todoClass.getDropTable();
+              list();
               jTextField1.setText("");
+            } else {
+              jTextArea1.setText("Произошла ошибка." + "\n" + "Вы написали все с маленькой буквы");
             }
-          } catch (Exception e) {
-            e.printStackTrace();
           }
+        } catch (Exception e) {
+          e.printStackTrace();
         }
       }
     });
 
+    jButton2.setFont(new java.awt.Font("Tahoma", Font.PLAIN, 12)); // NOI18N
     jButton2.setText("Список всех дел");
     jButton2.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -127,6 +224,7 @@ class Main extends JFrame {
       }
     });
 
+    jButton3.setFont(new java.awt.Font("Tahoma", Font.PLAIN, 12)); // NOI18N
     jButton3.setText("Очистка");
     jButton3.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
@@ -135,6 +233,17 @@ class Main extends JFrame {
         //textfield.setText(null); //or use this
       }
     });
+
+    jButton4.setFont(new java.awt.Font("Tahoma", Font.PLAIN, 12)); // NOI18N
+    jButton4.setText("Список команд");
+    jButton4.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButton4ActionPerformed(evt);
+        //    jButton1ActionPerformed(e);
+        //textfield.setText(null); //or use this
+      }
+    });
+
 
     // jTextPane1.setToolTipText("");
     jScrollPane2.setViewportView(jTextPane1);
@@ -158,18 +267,16 @@ class Main extends JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(
-                            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 139,
-                                    javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 170,
-                                    javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jButton2)
-                                    .addPreferredGap(
-                                        javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(jButton3)))
-                        .addGap(0, 344, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton4)))
+                        .addGap(0, 217, Short.MAX_VALUE)))
                 .addContainerGap())
     );
     layout.setVerticalGroup(
@@ -178,20 +285,19 @@ class Main extends JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addGap(4, 4, 4)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230,
-                    javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
-                    .addComponent(jButton3))
-                .addGap(8, 8, 8)
+                    .addComponent(jButton3)
+                    .addComponent(jButton4))
+                .addGap(7, 7, 7)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 32,
-                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
-                .addContainerGap(47, Short.MAX_VALUE))
+                .addContainerGap(48, Short.MAX_VALUE))
     );
 
     pack();
@@ -207,10 +313,35 @@ class Main extends JFrame {
     list();
   }
 
+  private void jButton4ActionPerformed(ActionEvent evt) {
+    //список дел
+    availableCommands();
+  }
+
 //  private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
 //    // очистка
 //
 //  }
+
+  public void availableCommands() {
+    jTextArea1.setText("");
+    jTextArea1.setText("Доступные команды:"
+        + "\nadd, "
+        + "add Index, "
+        + "edit Index, "
+        + "delete index, "
+        + "del index, "
+        + "delete all, "
+        + "list"
+        + "\nадд, "
+        + "адд индекс, "
+        + "изменить индекс, "
+        + "удалить индекс, "
+        + "удалить все, "
+        + "лист"
+        + "\nP. S. Index/индекс = цифра"
+        + "\nP. S.2 Если слово начинается с большой буквы, то комманду писать не нужно!");
+  }
 
   public int num() {
     try {
@@ -230,7 +361,6 @@ class Main extends JFrame {
     jTextArea1.setText("");
     if (num() == 0) {
       jTextArea1.setText("Заметок нет!");
-      System.err.println("Заметок нет!");
     } else {
       try {
         Class.forName("com.mysql.jdbc.Driver");

@@ -81,24 +81,24 @@ public class TodoClass {
 
   public void addText(String command) {
     String todoText = command.trim();
-      try {
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(CONN, USER, PASS);
-        Date dateNow = new Date();
-        SimpleDateFormat formatForDateNow = new SimpleDateFormat("dd.MM.yyyy '|' HH:mm:ss");
-        String dateADD = formatForDateNow.format(dateNow);
-        String query = "INSERT INTO Todolist (id, text, time)" + " values (?, ?, ?)";
-        PreparedStatement preparedStmt = conn.prepareStatement(query);
-        preparedStmt.setInt(1, num() + 1); // Получаем "длину" таблицы и прибавляем 1
-        preparedStmt.setString(2, todoText);
-        preparedStmt.setString(3, dateADD);
+    try {
+      Class.forName("com.mysql.jdbc.Driver");
+      Connection conn = DriverManager.getConnection(CONN, USER, PASS);
+      Date dateNow = new Date();
+      SimpleDateFormat formatForDateNow = new SimpleDateFormat("dd.MM.yyyy '|' HH:mm:ss");
+      String dateADD = formatForDateNow.format(dateNow);
+      String query = "INSERT INTO Todolist (id, text, time)" + " values (?, ?, ?)";
+      PreparedStatement preparedStmt = conn.prepareStatement(query);
+      preparedStmt.setInt(1, num() + 1); // Получаем "длину" таблицы и прибавляем 1
+      preparedStmt.setString(2, todoText);
+      preparedStmt.setString(3, dateADD);
 
-        preparedStmt.execute(); //Записываем данные в БД
-        System.err.println("Заметка сохранена!");
-        conn.close();
-      } catch (Exception e) {
-        System.err.println(e.getMessage());
-      }
+      preparedStmt.execute(); //Записываем данные в БД
+      System.err.println("Заметка сохранена!");
+      conn.close();
+    } catch (Exception e) {
+      System.err.println(e.getMessage());
+    }
   }
 
   public void add(String command) {
@@ -253,7 +253,7 @@ public class TodoClass {
           String text = rs.getString("text");
           String time = rs.getString("time");
           //Вывод данных
-         // todoList.put(id, text);
+          // todoList.put(id, text);
           System.out.print("\n" + id + ". " + text + " | Дата создания: " + time);
         }
         System.out.println();
@@ -263,28 +263,5 @@ public class TodoClass {
         System.err.println(e.getMessage());
       }
     }
-  }
-
-  public void availableCommands() {
-    System.out.print("Доступные команды:");
-    System.out.print(""
-        + "\nadd, "
-        + "add Index, "
-        + "edit Index, "
-        + "delete index, "
-        + "del index, "
-        + "delete all, "
-        + "list");
-    System.out.print(""
-        + "\nадд, "
-        + "адд индекс, "
-        + "изменить индекс, "
-        + "удалить индекс, "
-        + "удалить все, "
-        + "лист");
-    System.out.print(""
-        + "\nP. S. Index/индекс = цифра");
-    System.out.println(""
-        + "\nP. S.2 Если слово начинается с большой буквы, то комманду писать не нужно!");
   }
 }
