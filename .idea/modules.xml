@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Java_ToDoList_MySQL.iml" filepath="$PROJECT_DIR$/.idea/Java_ToDoList_MySQL.iml" />
-      <module fileurl="file://$PROJECT_DIR$/MySQL/MySQL.iml" filepath="$PROJECT_DIR$/MySQL/MySQL.iml" />
     </modules>
   </component>
 </project>
