@@ -1,6 +1,6 @@
 # Java ToDoList MySQL
 
-![Image description](image2.png)
+![Image description](image.png)
 
 ## FAQ & Troubleshooting
 
