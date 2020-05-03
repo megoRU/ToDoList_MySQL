@@ -1,4 +1,6 @@
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -34,6 +37,13 @@ class Main extends JFrame {
     setLocation(x, y);
     list();
     super.setTitle("Список дел на Java");
+    setIconImage(getImage());
+  }
+
+  private Image getImage() {
+    String fileName = "img/" + "icon" + ".png";
+    ImageIcon icon = new ImageIcon(getClass().getResource(fileName));
+    return icon.getImage();
   }
 
   @SuppressWarnings("unchecked")
@@ -66,7 +76,7 @@ class Main extends JFrame {
     jButton2.setFocusable(false);
     jButton2.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
-        jButton2ActionPerformed(evt);
+        jButton2ActionPerformed();
       }
     });
 
@@ -86,7 +96,7 @@ class Main extends JFrame {
     jButton4.setFocusable(false);
     jButton4.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
-        jButton4ActionPerformed(evt);
+        jButton4ActionPerformed();
       }
     });
 
@@ -102,6 +112,7 @@ class Main extends JFrame {
         try {
           if (jTextField1.getText().equals("")) {
             System.err.println("Should not be NULL");
+            jTextArea1.setText("Зачем пустая строка в базе данных?");
           }
           String inputLine = jTextField1.getText();
           if (!jTextField1.getText().equals("")) {
@@ -160,7 +171,7 @@ class Main extends JFrame {
               jTextField1.setText("");
             }
             else {
-              jTextArea1.setText("Скорее всего произошла ошибка." + "\n" + "Вы написали все с маленькой бувы");
+              jTextArea1.setText("Произошла ошибка." + "\n" + "Вы написали первое слово с маленькой буквы либо команда нераспознанна");
             }
           }
         } catch (Exception ee) {
@@ -177,6 +188,7 @@ class Main extends JFrame {
         try {
           if (jTextField1.getText().equals("")) {
             System.err.println("Should not be NULL");
+            jTextArea1.setText("Зачем пустая строка в базе данных?");
           }
           String input = jTextField1.getText();
           if (!jTextField1.getText().equals("")) {
@@ -234,7 +246,7 @@ class Main extends JFrame {
               list();
               jTextField1.setText("");
             } else {
-              jTextArea1.setText("Произошла ошибка." + "\n" + "Вы написали все с маленькой буквы");
+              jTextArea1.setText("Произошла ошибка." + "\n" + "Вы написали первое слово с маленькой буквы либо команда нераспознанна");
             }
           }
         } catch (Exception e) {
@@ -245,16 +257,17 @@ class Main extends JFrame {
 
     jTextField1.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
-        jTextField1ActionPerformed(evt);
+        jTextField1ActionPerformed();
       }
     });
 
-    jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+    jLabel2.setFont(new java.awt.Font("Tahoma", Font.BOLD, 14)); // NOI18N
     jLabel2.setForeground(new java.awt.Color(255, 255, 255));
     jLabel2.setText("Поле ввода:");
 
     jTextArea1.setEditable(false);
     jTextArea1.setColumns(20);
+    jTextArea1.setFont(new java.awt.Font("Tahoma", Font.BOLD, 12)); // NOI18N
     jTextArea1.setRows(5);
     jScrollPane1.setViewportView(jTextArea1);
 
@@ -318,15 +331,16 @@ class Main extends JFrame {
     pack();
   }// </editor-fold>
 
-  private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {
+  private void jTextField1ActionPerformed() {
   }
 
-  private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
+  private void jButton2ActionPerformed() {
+    //список дел
     list();
   }
 
-  private void jButton4ActionPerformed(ActionEvent evt) {
-    //список дел
+  private void jButton4ActionPerformed() {
+    //список всех команд
     availableCommands();
   }
 
@@ -399,11 +413,6 @@ class Main extends JFrame {
    * @param args the command line arguments
    */
   public static void main(String[] args) {
-    /* Set the Nimbus look and feel */
-    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-    /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-     * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-     */
     try {
       for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
         if ("Nimbus".equals(info.getName())) {
@@ -414,16 +423,13 @@ class Main extends JFrame {
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
     }
-    //</editor-fold>
 
-    /* Create and display the form */
     java.awt.EventQueue.invokeLater(new Runnable() {
       public void run() {
         new Main().setVisible(true);
       }
     });
   }
-
   // Variables declaration - do not modify
   private javax.swing.JButton jButton1;
   private javax.swing.JButton jButton2;
