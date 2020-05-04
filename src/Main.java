@@ -3,7 +3,6 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -16,15 +15,20 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 class Main extends JFrame {
 
+
   private static final String CONN = "jdbc:mysql://176.96.239.141:3306/u2864_skillbox2?useSSL=false";
   private static final String USER = "u2864_skillbox2";
   private static final String PASS = "9S7j1D0b";
 
+  private javax.swing.JTextArea jTextArea1;
+  private javax.swing.JTextField jTextField1;
+
   public TodoClass todoClass = new TodoClass();
 
   public Main() {
-    todoClass.getCreateTable();
     initComponents();
+    todoClass.getCreateTable();
+    list();
     Toolkit toolkit = Toolkit.getDefaultToolkit();
     Dimension screenSize = toolkit.getScreenSize();
     JFrame frame = new JFrame("Demo");
@@ -35,7 +39,6 @@ class Main extends JFrame {
     //Set the new frame location
     frame.setLocation(x, y);
     setLocation(x, y);
-    list();
     super.setTitle("Список дел на Java");
     setIconImage(getImage());
   }
@@ -46,19 +49,19 @@ class Main extends JFrame {
     return icon.getImage();
   }
 
-  @SuppressWarnings("unchecked")
   // <editor-fold defaultstate="collapsed" desc="Generated Code">
   private void initComponents() {
 
-    jPanel1 = new javax.swing.JPanel();
-    jLabel1 = new javax.swing.JLabel();
-    jButton1 = new javax.swing.JButton();
-    jButton2 = new javax.swing.JButton();
-    jButton3 = new javax.swing.JButton();
-    jButton4 = new javax.swing.JButton();
+    javax.swing.JPanel jPanel1 = new javax.swing.JPanel();
+    javax.swing.JLabel jLabel1 = new javax.swing.JLabel();
+    // Variables declaration - do not modify
+    javax.swing.JButton jButton1 = new javax.swing.JButton();
+    javax.swing.JButton jButton2 = new javax.swing.JButton();
+    javax.swing.JButton jButton3 = new javax.swing.JButton();
+    javax.swing.JButton jButton4 = new javax.swing.JButton();
     jTextField1 = new javax.swing.JTextField();
-    jLabel2 = new javax.swing.JLabel();
-    jScrollPane1 = new javax.swing.JScrollPane();
+    javax.swing.JLabel jLabel2 = new javax.swing.JLabel();
+    javax.swing.JScrollPane jScrollPane1 = new javax.swing.JScrollPane();
     jTextArea1 = new javax.swing.JTextArea();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -66,41 +69,31 @@ class Main extends JFrame {
 
     jPanel1.setBackground(new java.awt.Color(0, 128, 128));
 
-    jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+    jLabel1.setFont(new java.awt.Font("Tahoma", Font.BOLD, 14)); // NOI18N
     jLabel1.setForeground(new java.awt.Color(255, 255, 255));
     jLabel1.setText("Вывод всех заметок:");
     jLabel1.setToolTipText("");
 
-    jButton2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+    jButton2.setFont(new java.awt.Font("Tahoma", Font.PLAIN, 12)); // NOI18N
     jButton2.setText("Список всех дел");
     jButton2.setFocusable(false);
-    jButton2.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        jButton2ActionPerformed();
-      }
-    });
+    jButton2.addActionListener(evt -> jButton2ActionPerformed());
 
-    jButton3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+    jButton3.setFont(new java.awt.Font("Tahoma", Font.PLAIN, 12)); // NOI18N
     jButton3.setText("Очистка");
     jButton3.setFocusable(false);
-    jButton3.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        jTextArea1.setText("");
-        //    jButton1ActionPerformed(e);
-        //textfield.setText(null); //or use this
-      }
+    jButton3.addActionListener(e -> {
+      jTextArea1.setText("");
+      //    jButton1ActionPerformed(e);
+      //textfield.setText(null); //or use this
     });
 
-    jButton4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+    jButton4.setFont(new java.awt.Font("Tahoma", Font.PLAIN, 12)); // NOI18N
     jButton4.setText("Список команд");
     jButton4.setFocusable(false);
-    jButton4.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        jButton4ActionPerformed();
-      }
-    });
+    jButton4.addActionListener(evt -> jButton4ActionPerformed());
 
-    jButton1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+    jButton1.setFont(new java.awt.Font("Tahoma", Font.BOLD, 12)); // NOI18N
     jButton1.setText("Отправить");
     jButton1.setFocusable(false);
 
@@ -181,85 +174,79 @@ class Main extends JFrame {
     };
     jTextField1.addActionListener(action);
 
-    jButton1.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        //  jButton3ActionPerformed(evt);
-        //jTextArea1.add(input);
-        try {
-          if (jTextField1.getText().equals("")) {
-            System.err.println("Should not be NULL");
-            jTextArea1.setText("Зачем пустая строка в базе данных?");
-          }
-          String input = jTextField1.getText();
-          if (!jTextField1.getText().equals("")) {
-            if (input.matches(todoClass.COMMAND_ADD_TO_INDEX)) {
-              todoClass.addToIndex(input);
-              list();
-              jTextField1.setText("");
-            }
-            if (input.matches(todoClass.ALL_LETTERS_AND_NUMBERS)) {
-              todoClass.addText(input);
-              list();
-              jTextField1.setText("");
-            } else if (input.matches(todoClass.COMMAND_ADD_TO_INDEX_RU)) {
-              todoClass.addToIndex(input);
-              list();
-              jTextField1.setText("");
-            } else if (input.matches(todoClass.COMMAND_ADD)) {
-              todoClass.add(input);
-              list();
-              jTextField1.setText("");
-            } else if (input.matches(todoClass.COMMAND_ADD_RU)) {
-              todoClass.add(input);
-              list();
-              jTextField1.setText("");
-            } else if (input.matches(todoClass.COMMAND_DELETE_ALL_RU)) {
-              todoClass.deleteAll(input);
-              list();
-              jTextField1.setText("");
-            } else if (input.matches(todoClass.COMMAND_DELETE_ALL)) {
-              todoClass.deleteAll(input);
-              list();
-              jTextField1.setText("");
-            } else if (input.matches(todoClass.COMMAND_EDIT)) {
-              todoClass.editByIndex(input);
-              list();
-              jTextField1.setText("");
-            } else if (input.matches(todoClass.COMMAND_DELETE)) {
-              todoClass.deleteByIndex(input);
-              list();
-              jTextField1.setText("");
-            } else if (input.matches(todoClass.COMMAND_DEL)) {
-              todoClass.deleteByIndex(input);
-              list();
-              jTextField1.setText("");
-            } else if (input.matches(todoClass.COMMAND_EDIT_RU)) {
-              todoClass.editByIndex(input);
-              list();
-              jTextField1.setText("");
-            } else if (input.matches(todoClass.COMMAND_DELETE_RU)) {
-              todoClass.deleteByIndex(input);
-              list();
-              jTextField1.setText("");
-            } else if (input.matches(todoClass.COMMAND_DELETE_BD)) {
-              todoClass.getDropTable();
-              list();
-              jTextField1.setText("");
-            } else {
-              jTextArea1.setText("Произошла ошибка." + "\n" + "Вы написали первое слово с маленькой буквы либо команда нераспознанна");
-            }
-          }
-        } catch (Exception e) {
-          e.printStackTrace();
+    jButton1.addActionListener(evt -> {
+      //  jButton3ActionPerformed(evt);
+      //jTextArea1.add(input);
+      try {
+        if (jTextField1.getText().equals("")) {
+          System.err.println("Should not be NULL");
+          jTextArea1.setText("Зачем пустая строка в базе данных?");
         }
+        String input = jTextField1.getText();
+        if (!jTextField1.getText().equals("")) {
+          if (input.matches(todoClass.COMMAND_ADD_TO_INDEX)) {
+            todoClass.addToIndex(input);
+            list();
+            jTextField1.setText("");
+          }
+          if (input.matches(todoClass.ALL_LETTERS_AND_NUMBERS)) {
+            todoClass.addText(input);
+            list();
+            jTextField1.setText("");
+          } else if (input.matches(todoClass.COMMAND_ADD_TO_INDEX_RU)) {
+            todoClass.addToIndex(input);
+            list();
+            jTextField1.setText("");
+          } else if (input.matches(todoClass.COMMAND_ADD)) {
+            todoClass.add(input);
+            list();
+            jTextField1.setText("");
+          } else if (input.matches(todoClass.COMMAND_ADD_RU)) {
+            todoClass.add(input);
+            list();
+            jTextField1.setText("");
+          } else if (input.matches(todoClass.COMMAND_DELETE_ALL_RU)) {
+            todoClass.deleteAll(input);
+            list();
+            jTextField1.setText("");
+          } else if (input.matches(todoClass.COMMAND_DELETE_ALL)) {
+            todoClass.deleteAll(input);
+            list();
+            jTextField1.setText("");
+          } else if (input.matches(todoClass.COMMAND_EDIT)) {
+            todoClass.editByIndex(input);
+            list();
+            jTextField1.setText("");
+          } else if (input.matches(todoClass.COMMAND_DELETE)) {
+            todoClass.deleteByIndex(input);
+            list();
+            jTextField1.setText("");
+          } else if (input.matches(todoClass.COMMAND_DEL)) {
+            todoClass.deleteByIndex(input);
+            list();
+            jTextField1.setText("");
+          } else if (input.matches(todoClass.COMMAND_EDIT_RU)) {
+            todoClass.editByIndex(input);
+            list();
+            jTextField1.setText("");
+          } else if (input.matches(todoClass.COMMAND_DELETE_RU)) {
+            todoClass.deleteByIndex(input);
+            list();
+            jTextField1.setText("");
+          } else if (input.matches(todoClass.COMMAND_DELETE_BD)) {
+            todoClass.getDropTable();
+            list();
+            jTextField1.setText("");
+          } else {
+            jTextArea1.setText("Произошла ошибка." + "\n" + "Вы написали первое слово с маленькой буквы либо команда нераспознанна");
+          }
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
       }
     });
 
-    jTextField1.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        jTextField1ActionPerformed();
-      }
-    });
+    jTextField1.addActionListener(evt -> jTextField1ActionPerformed());
 
     jLabel2.setFont(new java.awt.Font("Tahoma", Font.BOLD, 14)); // NOI18N
     jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -409,9 +396,6 @@ class Main extends JFrame {
     }
   }
 
-  /**
-   * @param args the command line arguments
-   */
   public static void main(String[] args) {
     try {
       for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -424,22 +408,7 @@ class Main extends JFrame {
       java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
     }
 
-    java.awt.EventQueue.invokeLater(new Runnable() {
-      public void run() {
-        new Main().setVisible(true);
-      }
-    });
+    java.awt.EventQueue.invokeLater(() -> new Main().setVisible(true));
   }
-  // Variables declaration - do not modify
-  private javax.swing.JButton jButton1;
-  private javax.swing.JButton jButton2;
-  private javax.swing.JButton jButton3;
-  private javax.swing.JButton jButton4;
-  private javax.swing.JLabel jLabel1;
-  private javax.swing.JLabel jLabel2;
-  private javax.swing.JPanel jPanel1;
-  private javax.swing.JTextArea jTextArea1;
-  private javax.swing.JScrollPane jScrollPane1;
-  private javax.swing.JTextField jTextField1;
   // End of variables declaration
 }
