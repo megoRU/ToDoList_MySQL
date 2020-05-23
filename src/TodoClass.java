@@ -41,13 +41,14 @@ public class TodoClass {
   private static final String PASS = "9S7j1D0b";
   private static final String SQL_DROP_TABLE = "DROP TABLE Todolist";
 
+  //не уверин с date нужно тестировать
   private static final String SQL_CREATE = "CREATE TABLE IF NOT EXISTS Todolist"
       + "("
       + " id int(6) NOT NULL AUTO_INCREMENT,"
       + " text varchar(128) NOT NULL,"
-      + " time varchar(128) NOT NULL,"
+      + " time date NOT NULL,"
       + " PRIMARY KEY (id),"
-      + " UNIQUE KEY text (text)"
+      + " UNIQUE KEY text (date)"
       + ")";
 
   private void dropTable() {
@@ -107,7 +108,8 @@ public class TodoClass {
       Class.forName("com.mysql.jdbc.Driver");
       Connection conn = DriverManager.getConnection(CONN, USER, PASS);
       Date dateNow = new Date();
-      SimpleDateFormat formatForDateNow = new SimpleDateFormat("dd.MM.yyyy '|' HH:mm:ss");
+      //Нужно проверить + дописать для секунд
+      SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd");
       String dateADD = formatForDateNow.format(dateNow);
       String query = "INSERT INTO Todolist (id, text, time)" + " values (?, ?, ?)";
       PreparedStatement preparedStmt = conn.prepareStatement(query);
