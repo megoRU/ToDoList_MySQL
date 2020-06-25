@@ -36,9 +36,9 @@ public class TodoClass {
    * SQL База данных которую можно просто импортировать:
    **/
 
-  private static final String CONN = "jdbc:mysql://176.96.239.141:3306/u2864_skillbox2?useSSL=false";
-  private static final String USER = "u2864_skillbox2";
-  private static final String PASS = "9S7j1D0b";
+  private static final String CONN = "jdbc:mysql://176.96.239.141:3306/admin_todolist?useSSL=false&serverTimezone=UTC&characterEncoding=utf8";
+  private static final String USER = "admin_todolist";
+  private static final String PASS = "B0*cg1k0";
   private static final String SQL_DROP_TABLE = "DROP TABLE Todolist";
 
   //не уверин с date нужно тестировать
@@ -46,9 +46,9 @@ public class TodoClass {
       + "("
       + " id int(6) NOT NULL AUTO_INCREMENT,"
       + " text varchar(128) NOT NULL,"
-      + " time date NOT NULL,"
+      + " time varchar(128) NOT NULL,"
       + " PRIMARY KEY (id),"
-      + " UNIQUE KEY text (date)"
+      + " UNIQUE KEY text (time)"
       + ")";
 
   private void dropTable() {
@@ -62,7 +62,7 @@ public class TodoClass {
     }
   }
 
-  private void createTable() {
+  public void createTable() {
     try {
       Connection conn = DriverManager.getConnection(CONN, USER, PASS);
       PreparedStatement preparedStatement = conn.prepareStatement(SQL_CREATE);

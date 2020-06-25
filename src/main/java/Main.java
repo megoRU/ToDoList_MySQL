@@ -16,9 +16,9 @@ import javax.swing.UnsupportedLookAndFeelException;
 class Main extends JFrame {
 
 
-  private static final String CONN = "jdbc:mysql://176.96.239.141:3306/u2864_skillbox2?useSSL=false";
-  private static final String USER = "u2864_skillbox2";
-  private static final String PASS = "9S7j1D0b";
+  private static final String CONN = "jdbc:mysql://176.96.239.141:3306/admin_todolist?useSSL=false&serverTimezone=UTC&characterEncoding=utf8";
+  private static final String USER = "admin_todolist";
+  private static final String PASS = "B0*cg1k0";
 
   private javax.swing.JTextArea jTextArea1;
   private javax.swing.JTextField jTextField1;
