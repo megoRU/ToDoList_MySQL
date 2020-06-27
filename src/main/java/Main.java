@@ -242,6 +242,7 @@ class Main extends JFrame {
           }
         }
       } catch (Exception e) {
+        jTextArea1.setText(e.getMessage());
         e.printStackTrace();
       }
     });
@@ -391,7 +392,9 @@ class Main extends JFrame {
         rs.close();
         conn.close();
       } catch (Exception e) {
+        jTextArea1.setText(e.getMessage());
         System.err.println(e.getMessage());
+        e.printStackTrace();
       }
     }
   }

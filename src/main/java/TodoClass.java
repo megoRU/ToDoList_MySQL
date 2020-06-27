@@ -19,8 +19,8 @@ public class TodoClass {
   public final String COMMAND_DELETE_RU = "удалить\\s+\\d+";
   public final String COMMAND_DELETE_ALL = "delete all";
   public final String COMMAND_DELETE_ALL_RU = "удалить все";
-  public final String COMMAND_LIST = "list";
-  public final String COMMAND_LIST_RU = "лист";
+  //public final String COMMAND_LIST = "list";
+  //public final String COMMAND_LIST_RU = "лист";
   public final String COMMAND_DELETE_BD = "удалить бд";
   public final String ALL_LETTERS_AND_NUMBERS = "^[A-ZА-Я]+[А-Яа-яA-Za-z0-9\\s+]+";
 
@@ -41,14 +41,13 @@ public class TodoClass {
   private static final String PASS = "B0*cg1k0";
   private static final String SQL_DROP_TABLE = "DROP TABLE Todolist";
 
-  //не уверин с date нужно тестировать
   private static final String SQL_CREATE = "CREATE TABLE IF NOT EXISTS Todolist"
       + "("
       + " id int(6) NOT NULL AUTO_INCREMENT,"
       + " text varchar(128) NOT NULL,"
       + " time varchar(128) NOT NULL,"
       + " PRIMARY KEY (id),"
-      + " UNIQUE KEY text (time)"
+      + " UNIQUE KEY text (text)"
       + ")";
 
   private void dropTable() {
@@ -103,18 +102,18 @@ public class TodoClass {
   }
 
   public void add(String command) {
-    String todoText = command.split("\\s+", 2)[1];
+    String[] todoText = command.split("\\s+", 2);
     try {
       Class.forName("com.mysql.jdbc.Driver");
       Connection conn = DriverManager.getConnection(CONN, USER, PASS);
       Date dateNow = new Date();
       //Нужно проверить + дописать для секунд
-      SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd");
+      SimpleDateFormat formatForDateNow = new SimpleDateFormat("dd.MM.yyyy '|' HH:mm:ss");
       String dateADD = formatForDateNow.format(dateNow);
       String query = "INSERT INTO Todolist (id, text, time)" + " values (?, ?, ?)";
       PreparedStatement preparedStmt = conn.prepareStatement(query);
       preparedStmt.setInt(1, num() + 1); // Получаем "длину" таблицы и прибавляем 1
-      preparedStmt.setString(2, todoText);
+      preparedStmt.setString(2, todoText[1]);
       preparedStmt.setString(3, dateADD);
 
       preparedStmt.execute(); //Записываем данные в БД
@@ -237,33 +236,32 @@ public class TodoClass {
       System.err.println(e.getMessage());
     }
   }
-
-  public void list() {
-    if (num() == 0) {
-      System.err.println("Заметок нет!");
-    } else {
-      try {
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(CONN, USER, PASS);
-        //Получаем данные и выводим
-        Statement statement = conn.createStatement();
-        String sql = "SELECT id, text, time FROM Todolist ORDER BY id ASC";
-        ResultSet rs = statement.executeQuery(sql);
-        System.err.println("Список всех заметок: ");
-        while (rs.next()) {
-          String id = rs.getString("id");
-          String text = rs.getString("text");
-          String time = rs.getString("time");
-          //Вывод данных
-          // todoList.put(id, text);
-          System.out.print("\n" + id + ". " + text + " | Дата создания: " + time);
-        }
-        System.out.println();
-        rs.close();
-        conn.close();
-      } catch (Exception e) {
-        System.err.println(e.getMessage());
-      }
-    }
-  }
 }
+//  public void list() {
+//    if (num() == 0) {
+//      System.err.println("Заметок нет!");
+//    } else {
+//      try {
+//        Class.forName("com.mysql.jdbc.Driver");
+//        Connection conn = DriverManager.getConnection(CONN, USER, PASS);
+//        //Получаем данные и выводим
+//        Statement statement = conn.createStatement();
+//        String sql = "SELECT id, text, time FROM Todolist ORDER BY id ASC";
+//        ResultSet rs = statement.executeQuery(sql);
+//        System.err.println("Список всех заметок: ");
+//        while (rs.next()) {
+//          String id = rs.getString("id");
+//          String text = rs.getString("text");
+//          String time = rs.getString("time");
+//          //Вывод данных
+//          // todoList.put(id, text);
+//          System.out.print("\n" + id + ". " + text + " | Дата создания: " + time);
+//        }
+//        System.out.println();
+//        rs.close();
+//        conn.close();
+//      } catch (Exception e) {
+//        System.err.println(e.getMessage());
+//      }
+//    }
+//  }
