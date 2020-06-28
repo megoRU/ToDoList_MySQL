@@ -354,7 +354,7 @@ class Main extends JFrame {
 
   public int num() {
     try {
-      Class.forName("com.mysql.jdbc.Driver");
+      Class.forName("com.mysql.cj.jdbc.Driver");
       Connection conn = DriverManager.getConnection(CONN, USER, PASS);
       Statement statement = conn.createStatement();
       ResultSet resultSet = statement.executeQuery("SELECT COUNT(id) AS id FROM Todolist");
@@ -372,7 +372,7 @@ class Main extends JFrame {
       jTextArea1.setText("Заметок нет!");
     } else {
       try {
-        Class.forName("com.mysql.jdbc.Driver");
+        Class.forName("com.mysql.cj.jdbc.Driver");
         Connection conn = DriverManager.getConnection(CONN, USER, PASS);
         //Получаем данные и выводим
         Statement statement = conn.createStatement();
@@ -391,6 +391,7 @@ class Main extends JFrame {
         System.out.println();
         rs.close();
         conn.close();
+        statement.close();
       } catch (Exception e) {
         jTextArea1.setText(e.getMessage());
         System.err.println(e.getMessage());

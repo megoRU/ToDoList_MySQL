@@ -44,8 +44,8 @@ public class TodoClass {
   private static final String SQL_CREATE = "CREATE TABLE IF NOT EXISTS Todolist"
       + "("
       + " id int(6) NOT NULL AUTO_INCREMENT,"
-      + " text varchar(128) NOT NULL,"
-      + " time varchar(128) NOT NULL,"
+      + " text varchar(255) NOT NULL,"
+      + " time TIMESTAMP NOT NULL,"
       + " PRIMARY KEY (id),"
       + " UNIQUE KEY text (text)"
       + ")";
@@ -61,7 +61,7 @@ public class TodoClass {
     }
   }
 
-  public void createTable() {
+  private void createTable() {
     try {
       Connection conn = DriverManager.getConnection(CONN, USER, PASS);
       PreparedStatement preparedStatement = conn.prepareStatement(SQL_CREATE);
@@ -82,17 +82,16 @@ public class TodoClass {
   public void addText(String command) {
     String todoText = command.trim();
     try {
-      Class.forName("com.mysql.jdbc.Driver");
+      Class.forName("com.mysql.cj.jdbc.Driver");
       Connection conn = DriverManager.getConnection(CONN, USER, PASS);
       Date dateNow = new Date();
-      SimpleDateFormat formatForDateNow = new SimpleDateFormat("dd.MM.yyyy '|' HH:mm:ss");
+      SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
       String dateADD = formatForDateNow.format(dateNow);
       String query = "INSERT INTO Todolist (id, text, time)" + " values (?, ?, ?)";
       PreparedStatement preparedStmt = conn.prepareStatement(query);
       preparedStmt.setInt(1, num() + 1); // Получаем "длину" таблицы и прибавляем 1
       preparedStmt.setString(2, todoText);
       preparedStmt.setString(3, dateADD);
-
       preparedStmt.execute(); //Записываем данные в БД
       System.err.println("Заметка сохранена!");
       conn.close();
@@ -104,23 +103,22 @@ public class TodoClass {
   public void add(String command) {
     String[] todoText = command.split("\\s+", 2);
     try {
-      Class.forName("com.mysql.jdbc.Driver");
+      Class.forName("com.mysql.cj.jdbc.Driver");
       Connection conn = DriverManager.getConnection(CONN, USER, PASS);
       Date dateNow = new Date();
       //Нужно проверить + дописать для секунд
-      SimpleDateFormat formatForDateNow = new SimpleDateFormat("dd.MM.yyyy '|' HH:mm:ss");
+      SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
       String dateADD = formatForDateNow.format(dateNow);
       String query = "INSERT INTO Todolist (id, text, time)" + " values (?, ?, ?)";
       PreparedStatement preparedStmt = conn.prepareStatement(query);
       preparedStmt.setInt(1, num() + 1); // Получаем "длину" таблицы и прибавляем 1
       preparedStmt.setString(2, todoText[1]);
       preparedStmt.setString(3, dateADD);
-
       preparedStmt.execute(); //Записываем данные в БД
       System.err.println("Заметка сохранена!");
       conn.close();
     } catch (Exception e) {
-      System.err.println(e.getMessage());
+      e.printStackTrace();
     }
   }
 
@@ -129,14 +127,16 @@ public class TodoClass {
    **/
   public int num() {
     try {
-      Class.forName("com.mysql.jdbc.Driver");
+      Class.forName("com.mysql.cj.jdbc.Driver");
       Connection conn = DriverManager.getConnection(CONN, USER, PASS);
       Statement statement = conn.createStatement();
       ResultSet resultSet = statement.executeQuery("SELECT COUNT(id) AS id FROM Todolist");
       if (resultSet.next()) {
         return resultSet.getInt(1);
       }
-    } catch (Exception ignored) {
+      conn.close();
+    } catch (Exception e) {
+      e.printStackTrace();
     }
     return 0;
   }
@@ -154,12 +154,12 @@ public class TodoClass {
       int addToIndex2 = num() + 1;
       System.err.println("Индекс изменен на: " + addToIndex2);
       try {
-        Class.forName("com.mysql.jdbc.Driver");
+        Class.forName("com.mysql.cj.jdbc.Driver");
         Connection conn = DriverManager.getConnection(CONN, USER, PASS);
 
         //Получаем данные
         Date dateNow = new Date();
-        SimpleDateFormat formatForDateNow = new SimpleDateFormat("dd.MM.yyyy '|' HH:mm:ss");
+        SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
         String dateADD = formatForDateNow.format(dateNow);
         String query = "INSERT INTO Todolist (id, text, time)" + " values (?, ?, ?)";
         PreparedStatement preparedStmt = conn.prepareStatement(query);
@@ -183,7 +183,7 @@ public class TodoClass {
     String indexText = commandArray[1];
     int addToIndex = Integer.parseInt(indexText);
     try {
-      Class.forName("com.mysql.jdbc.Driver");
+      Class.forName("com.mysql.cj.jdbc.Driver");
       Connection conn = DriverManager.getConnection(CONN, USER, PASS);
       String query = "update Todolist set text = ? where id = ?";
       PreparedStatement preparedStmt = conn.prepareStatement(query);
@@ -202,7 +202,7 @@ public class TodoClass {
       System.err.println("Заметок нет! Зачем их удалять :)");
     } else if (command.equals(COMMAND_DELETE_ALL) || command.equals(COMMAND_DELETE_ALL_RU)) {
       try {
-        Class.forName("com.mysql.jdbc.Driver");
+        Class.forName("com.mysql.cj.jdbc.Driver");
         Connection conn = DriverManager.getConnection(CONN, USER, PASS);
         String query3 = "DELETE FROM Todolist WHERE id";
         PreparedStatement preparedStmt = conn.prepareStatement(query3);
@@ -220,7 +220,7 @@ public class TodoClass {
     int indexRemove = Integer.parseInt(todoTextDelete);
     int indexReSetId = Integer.parseInt(todoTextDelete);
     try {
-      Class.forName("com.mysql.jdbc.Driver");
+      Class.forName("com.mysql.cj.jdbc.Driver");
       Connection conn = DriverManager.getConnection(CONN, USER, PASS);
       String query3 = "DELETE FROM Todolist WHERE id = ?";
       String query4 = "UPDATE Todolist SET id = id - 1 WHERE id >= ?";
@@ -242,7 +242,7 @@ public class TodoClass {
 //      System.err.println("Заметок нет!");
 //    } else {
 //      try {
-//        Class.forName("com.mysql.jdbc.Driver");
+//        Class.forName("com.mysql.cj.jdbc.Driver");
 //        Connection conn = DriverManager.getConnection(CONN, USER, PASS);
 //        //Получаем данные и выводим
 //        Statement statement = conn.createStatement();
@@ -260,6 +260,7 @@ public class TodoClass {
 //        System.out.println();
 //        rs.close();
 //        conn.close();
+//        statement.close();
 //      } catch (Exception e) {
 //        System.err.println(e.getMessage());
 //      }
