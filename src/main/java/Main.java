@@ -12,9 +12,9 @@ import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.UnsupportedLookAndFeelException;
+import oshi.SystemInfo;
 
 class Main extends JFrame {
-
 
   private static final String CONN = "jdbc:mysql://176.96.239.141:3306/admin_todolist?useSSL=false&serverTimezone=UTC&characterEncoding=utf8";
   private static final String USER = "admin_todolist";
@@ -41,6 +41,14 @@ class Main extends JFrame {
     setLocation(x, y);
     super.setTitle("Список дел на Java");
     setIconImage(getImage());
+    CPUid();
+  }
+
+  private static final String CPUid() {
+    SystemInfo si = new SystemInfo();
+    String processorId = si.getHardware().getProcessor().toString();
+    String[] prcessorIdMassive = processorId.split("\\s+"); //prcessorIdMassive[26]
+    return prcessorIdMassive[26];
   }
 
   private Image getImage() {
@@ -357,7 +365,7 @@ class Main extends JFrame {
       Class.forName("com.mysql.cj.jdbc.Driver");
       Connection conn = DriverManager.getConnection(CONN, USER, PASS);
       Statement statement = conn.createStatement();
-      ResultSet resultSet = statement.executeQuery("SELECT COUNT(id) AS id FROM Todolist");
+      ResultSet resultSet = statement.executeQuery("SELECT COUNT(id) AS id FROM Todolist_" + CPUid());
       if (resultSet.next()) {
         return resultSet.getInt(1);
       }
@@ -376,7 +384,7 @@ class Main extends JFrame {
         Connection conn = DriverManager.getConnection(CONN, USER, PASS);
         //Получаем данные и выводим
         Statement statement = conn.createStatement();
-        String sql = "SELECT id, text, time FROM Todolist ORDER BY id ASC";
+        String sql = "SELECT id, text, time FROM Todolist_" + CPUid() + " ORDER BY id ASC";
         ResultSet rs = statement.executeQuery(sql);
         //  jTextArea1.append("Список всех заметок: ");
         while (rs.next()) {

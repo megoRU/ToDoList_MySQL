@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import oshi.SystemInfo;
 
 public class TodoClass {
 
@@ -39,9 +40,9 @@ public class TodoClass {
   private static final String CONN = "jdbc:mysql://176.96.239.141:3306/admin_todolist?useSSL=false&serverTimezone=UTC&characterEncoding=utf8";
   private static final String USER = "admin_todolist";
   private static final String PASS = "B0*cg1k0";
-  private static final String SQL_DROP_TABLE = "DROP TABLE Todolist";
+  private static final String SQL_DROP_TABLE = "DROP TABLE Todolist_" + CPUid();
 
-  private static final String SQL_CREATE = "CREATE TABLE IF NOT EXISTS Todolist"
+  private static final String SQL_CREATE = "CREATE TABLE IF NOT EXISTS Todolist_" + CPUid()
       + "("
       + " id int(6) NOT NULL AUTO_INCREMENT,"
       + " text varchar(255) NOT NULL,"
@@ -79,6 +80,13 @@ public class TodoClass {
     dropTable();
   }
 
+  private static final String CPUid() {
+    SystemInfo si = new SystemInfo();
+    String processorId = si.getHardware().getProcessor().toString();
+    String[] prcessorIdMassive = processorId.split("\\s+"); //prcessorIdMassive[26]
+    return prcessorIdMassive[26];
+  }
+
   public void addText(String command) {
     String todoText = command.trim();
     try {
@@ -87,7 +95,7 @@ public class TodoClass {
       Date dateNow = new Date();
       SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
       String dateADD = formatForDateNow.format(dateNow);
-      String query = "INSERT INTO Todolist (id, text, time)" + " values (?, ?, ?)";
+      String query = "INSERT INTO Todolist_" + CPUid() + "(id, text, time)" + " values (?, ?, ?)";
       PreparedStatement preparedStmt = conn.prepareStatement(query);
       preparedStmt.setInt(1, num() + 1); // Получаем "длину" таблицы и прибавляем 1
       preparedStmt.setString(2, todoText);
@@ -109,7 +117,7 @@ public class TodoClass {
       //Нужно проверить + дописать для секунд
       SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
       String dateADD = formatForDateNow.format(dateNow);
-      String query = "INSERT INTO Todolist (id, text, time)" + " values (?, ?, ?)";
+      String query = "INSERT INTO Todolist_" + CPUid() + "(id, text, time)" + " values (?, ?, ?)";
       PreparedStatement preparedStmt = conn.prepareStatement(query);
       preparedStmt.setInt(1, num() + 1); // Получаем "длину" таблицы и прибавляем 1
       preparedStmt.setString(2, todoText[1]);
@@ -130,7 +138,7 @@ public class TodoClass {
       Class.forName("com.mysql.cj.jdbc.Driver");
       Connection conn = DriverManager.getConnection(CONN, USER, PASS);
       Statement statement = conn.createStatement();
-      ResultSet resultSet = statement.executeQuery("SELECT COUNT(id) AS id FROM Todolist");
+      ResultSet resultSet = statement.executeQuery("SELECT COUNT(id) AS id FROM Todolist_" + CPUid() );
       if (resultSet.next()) {
         return resultSet.getInt(1);
       }
@@ -161,7 +169,7 @@ public class TodoClass {
         Date dateNow = new Date();
         SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
         String dateADD = formatForDateNow.format(dateNow);
-        String query = "INSERT INTO Todolist (id, text, time)" + " values (?, ?, ?)";
+        String query = "INSERT INTO Todolist_" + CPUid() + "(id, text, time)" + " values (?, ?, ?)";
         PreparedStatement preparedStmt = conn.prepareStatement(query);
         preparedStmt.setInt(1, addToIndex2);
         preparedStmt.setString(2, todoTextAddToIndex);
@@ -185,7 +193,7 @@ public class TodoClass {
     try {
       Class.forName("com.mysql.cj.jdbc.Driver");
       Connection conn = DriverManager.getConnection(CONN, USER, PASS);
-      String query = "update Todolist set text = ? where id = ?";
+      String query = "update Todolist_" + CPUid() + "set text = ? where id = ?";
       PreparedStatement preparedStmt = conn.prepareStatement(query);
       preparedStmt.setInt(2, addToIndex);
       preparedStmt.setString(1, todoTextEdit);
@@ -204,7 +212,7 @@ public class TodoClass {
       try {
         Class.forName("com.mysql.cj.jdbc.Driver");
         Connection conn = DriverManager.getConnection(CONN, USER, PASS);
-        String query3 = "DELETE FROM Todolist WHERE id";
+        String query3 = "DELETE FROM Todolist_" + CPUid() + "WHERE id";
         PreparedStatement preparedStmt = conn.prepareStatement(query3);
         preparedStmt.executeUpdate(query3);
         System.err.println("Заметки удалены!");
@@ -222,8 +230,8 @@ public class TodoClass {
     try {
       Class.forName("com.mysql.cj.jdbc.Driver");
       Connection conn = DriverManager.getConnection(CONN, USER, PASS);
-      String query3 = "DELETE FROM Todolist WHERE id = ?";
-      String query4 = "UPDATE Todolist SET id = id - 1 WHERE id >= ?";
+      String query3 = "DELETE FROM Todolist_" + CPUid() + "WHERE id = ?";
+      String query4 = "UPDATE Todolist_" + CPUid() +  "SET id = id - 1 WHERE id >= ?";
       PreparedStatement preparedStmt = conn.prepareStatement(query3);
       PreparedStatement preparedStmt2 = conn.prepareStatement(query4);
       preparedStmt.setInt(1, indexRemove);
@@ -246,7 +254,7 @@ public class TodoClass {
 //        Connection conn = DriverManager.getConnection(CONN, USER, PASS);
 //        //Получаем данные и выводим
 //        Statement statement = conn.createStatement();
-//        String sql = "SELECT id, text, time FROM Todolist ORDER BY id ASC";
+//        String sql = "SELECT id, text, time FROM Todolist_" + CPUid() + "ORDER BY id ASC";
 //        ResultSet rs = statement.executeQuery(sql);
 //        System.err.println("Список всех заметок: ");
 //        while (rs.next()) {
