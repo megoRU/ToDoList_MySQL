@@ -43,7 +43,7 @@ public class TodoClass {
   private static final String SQL_DROP_TABLE = "DROP TABLE Todolist_" + CPUid();
 
   private static final String SQL_CREATE = "CREATE TABLE IF NOT EXISTS Todolist_" + CPUid()
-      + "("
+      + " ("
       + " id int(6) NOT NULL AUTO_INCREMENT,"
       + " text varchar(255) NOT NULL,"
       + " time TIMESTAMP NOT NULL,"
@@ -95,7 +95,7 @@ public class TodoClass {
       Date dateNow = new Date();
       SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
       String dateADD = formatForDateNow.format(dateNow);
-      String query = "INSERT INTO Todolist_" + CPUid() + "(id, text, time)" + " values (?, ?, ?)";
+      String query = "INSERT INTO Todolist_" + CPUid() + " (id, text, time)" + " values (?, ?, ?)";
       PreparedStatement preparedStmt = conn.prepareStatement(query);
       preparedStmt.setInt(1, num() + 1); // Получаем "длину" таблицы и прибавляем 1
       preparedStmt.setString(2, todoText);
@@ -117,7 +117,7 @@ public class TodoClass {
       //Нужно проверить + дописать для секунд
       SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
       String dateADD = formatForDateNow.format(dateNow);
-      String query = "INSERT INTO Todolist_" + CPUid() + "(id, text, time)" + " values (?, ?, ?)";
+      String query = "INSERT INTO Todolist_" + CPUid() + " (id, text, time)" + " values (?, ?, ?)";
       PreparedStatement preparedStmt = conn.prepareStatement(query);
       preparedStmt.setInt(1, num() + 1); // Получаем "длину" таблицы и прибавляем 1
       preparedStmt.setString(2, todoText[1]);
@@ -138,7 +138,7 @@ public class TodoClass {
       Class.forName("com.mysql.cj.jdbc.Driver");
       Connection conn = DriverManager.getConnection(CONN, USER, PASS);
       Statement statement = conn.createStatement();
-      ResultSet resultSet = statement.executeQuery("SELECT COUNT(id) AS id FROM Todolist_" + CPUid() );
+      ResultSet resultSet = statement.executeQuery("SELECT COUNT(id) AS id FROM Todolist_" + CPUid());
       if (resultSet.next()) {
         return resultSet.getInt(1);
       }
@@ -169,7 +169,7 @@ public class TodoClass {
         Date dateNow = new Date();
         SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
         String dateADD = formatForDateNow.format(dateNow);
-        String query = "INSERT INTO Todolist_" + CPUid() + "(id, text, time)" + " values (?, ?, ?)";
+        String query = "INSERT INTO Todolist_" + CPUid() + " (id, text, time)" + " values (?, ?, ?)";
         PreparedStatement preparedStmt = conn.prepareStatement(query);
         preparedStmt.setInt(1, addToIndex2);
         preparedStmt.setString(2, todoTextAddToIndex);
@@ -193,7 +193,7 @@ public class TodoClass {
     try {
       Class.forName("com.mysql.cj.jdbc.Driver");
       Connection conn = DriverManager.getConnection(CONN, USER, PASS);
-      String query = "update Todolist_" + CPUid() + "set text = ? where id = ?";
+      String query = "update Todolist_" + CPUid() + " SET text = ? WHERE id = ?";
       PreparedStatement preparedStmt = conn.prepareStatement(query);
       preparedStmt.setInt(2, addToIndex);
       preparedStmt.setString(1, todoTextEdit);
@@ -212,7 +212,7 @@ public class TodoClass {
       try {
         Class.forName("com.mysql.cj.jdbc.Driver");
         Connection conn = DriverManager.getConnection(CONN, USER, PASS);
-        String query3 = "DELETE FROM Todolist_" + CPUid() + "WHERE id";
+        String query3 = "DELETE FROM Todolist_" + CPUid() + " WHERE id";
         PreparedStatement preparedStmt = conn.prepareStatement(query3);
         preparedStmt.executeUpdate(query3);
         System.err.println("Заметки удалены!");
@@ -230,8 +230,8 @@ public class TodoClass {
     try {
       Class.forName("com.mysql.cj.jdbc.Driver");
       Connection conn = DriverManager.getConnection(CONN, USER, PASS);
-      String query3 = "DELETE FROM Todolist_" + CPUid() + "WHERE id = ?";
-      String query4 = "UPDATE Todolist_" + CPUid() +  "SET id = id - 1 WHERE id >= ?";
+      String query3 = "DELETE FROM Todolist_" + CPUid() + " WHERE id = ?";
+      String query4 = "UPDATE Todolist_" + CPUid() +  " SET id = id - 1 WHERE id >= ?";
       PreparedStatement preparedStmt = conn.prepareStatement(query3);
       PreparedStatement preparedStmt2 = conn.prepareStatement(query4);
       preparedStmt.setInt(1, indexRemove);

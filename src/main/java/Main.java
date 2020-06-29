@@ -41,7 +41,7 @@ class Main extends JFrame {
     setLocation(x, y);
     super.setTitle("Список дел на Java");
     setIconImage(getImage());
-    CPUid();
+    //CPUid();
   }
 
   private static final String CPUid() {
