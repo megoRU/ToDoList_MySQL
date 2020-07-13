@@ -37,7 +37,7 @@ public class TodoClass {
    * SQL База данных которую можно просто импортировать:
    **/
 
-  private static final String CONN = "jdbc:mysql://176.96.239.141:3306/admin_todolist?useSSL=false&serverTimezone=UTC&characterEncoding=utf8";
+  private static final String CONN = "jdbc:mysql://95.181.157.159:3306/admin_todolist?useSSL=false&serverTimezone=UTC&characterEncoding=utf8";
   private static final String USER = "admin_todolist";
   private static final String PASS = "B0*cg1k0";
   private static final String SQL_DROP_TABLE = "DROP TABLE Todolist_" + CPUid();
