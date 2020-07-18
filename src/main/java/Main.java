@@ -2,7 +2,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -25,11 +24,13 @@ class Main  extends JFrame  {
   private static final String PASS = "B0*cg1k0";
   private final Connection conn = DriverManager.getConnection(CONN, USER, PASS);
   private final Statement statement = conn.createStatement();
-
   private javax.swing.JTextArea jTextArea1;
   private javax.swing.JTextField jTextField1;
-
   public TodoClass todoClass = new TodoClass();
+
+  public Connection getConn() {
+    return conn;
+  }
 
   public Main() throws SQLException {
     initComponents();
@@ -55,14 +56,15 @@ class Main  extends JFrame  {
       public void windowClosing(WindowEvent e)
       {
         super.windowClosing(e);
-        // Do your disconnect from the DB here.
+        //close connections to DB
         try {
           conn.close();
           statement.close();
+          todoClass.getConn().close();
+          getConn().close();
         } catch (SQLException throwables) {
           throwables.printStackTrace();
         }
-
       }
     });
   }

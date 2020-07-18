@@ -1,3 +1,5 @@
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -6,9 +8,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.JFrame;
 import oshi.SystemInfo;
 
-public class TodoClass {
+public class TodoClass extends JFrame {
 
   public final String COMMAND_ADD = "add\\s+.+";
   public final String COMMAND_ADD_RU = "адд\\s+.+";
@@ -27,7 +30,10 @@ public class TodoClass {
   public final String ALL_LETTERS_AND_NUMBERS = "^[A-ZА-Я]+[А-Яа-яA-Za-z0-9\\s+]+";
   private final Connection conn = DriverManager.getConnection(CONN, USER, PASS);
 
-  //private final TreeMap<String, String> todoList = new TreeMap<>();
+  public Connection getConn() {
+    return conn;
+  }
+//private final TreeMap<String, String> todoList = new TreeMap<>();
 
   /**
    * Заменить данные на свои; CONN = "jdbc:mysql://ip_adress_or_domain:3306/BD_name";
@@ -82,6 +88,7 @@ public class TodoClass {
   public void getDropTable() {
     dropTable();
   }
+
 
   private static final String CPUid() {
     SystemInfo si = new SystemInfo();
