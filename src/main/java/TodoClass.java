@@ -2,6 +2,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,6 +25,7 @@ public class TodoClass {
   //public final String COMMAND_LIST_RU = "лист";
   public final String COMMAND_DELETE_BD = "удалить бд";
   public final String ALL_LETTERS_AND_NUMBERS = "^[A-ZА-Я]+[А-Яа-яA-Za-z0-9\\s+]+";
+  private final Connection conn = DriverManager.getConnection(CONN, USER, PASS);
 
   //private final TreeMap<String, String> todoList = new TreeMap<>();
 
@@ -51,9 +53,11 @@ public class TodoClass {
       + " UNIQUE KEY text (text)"
       + ")";
 
+  public TodoClass() throws SQLException {
+  }
+
   private void dropTable() {
     try {
-      Connection conn = DriverManager.getConnection(CONN, USER, PASS);
       PreparedStatement preparedStatement = conn.prepareStatement(SQL_DROP_TABLE);
       preparedStatement.executeUpdate();
       createTable(); //создаем
@@ -64,7 +68,6 @@ public class TodoClass {
 
   private void createTable() {
     try {
-      Connection conn = DriverManager.getConnection(CONN, USER, PASS);
       PreparedStatement preparedStatement = conn.prepareStatement(SQL_CREATE);
       preparedStatement.executeUpdate();
     } catch (Exception e) {
@@ -90,8 +93,6 @@ public class TodoClass {
   public void addText(String command) {
     String todoText = command.trim();
     try {
-      Class.forName("com.mysql.cj.jdbc.Driver");
-      Connection conn = DriverManager.getConnection(CONN, USER, PASS);
       Date dateNow = new Date();
       SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
       String dateADD = formatForDateNow.format(dateNow);
@@ -102,7 +103,7 @@ public class TodoClass {
       preparedStmt.setString(3, dateADD);
       preparedStmt.execute(); //Записываем данные в БД
       System.err.println("Заметка сохранена!");
-      conn.close();
+      //conn.close();
     } catch (Exception e) {
       System.err.println(e.getMessage());
     }
@@ -111,8 +112,6 @@ public class TodoClass {
   public void add(String command) {
     String[] todoText = command.split("\\s+", 2);
     try {
-      Class.forName("com.mysql.cj.jdbc.Driver");
-      Connection conn = DriverManager.getConnection(CONN, USER, PASS);
       Date dateNow = new Date();
       //Нужно проверить + дописать для секунд
       SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
@@ -124,7 +123,7 @@ public class TodoClass {
       preparedStmt.setString(3, dateADD);
       preparedStmt.execute(); //Записываем данные в БД
       System.err.println("Заметка сохранена!");
-      conn.close();
+   //   conn.close();
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -135,14 +134,12 @@ public class TodoClass {
    **/
   public int num() {
     try {
-      Class.forName("com.mysql.cj.jdbc.Driver");
-      Connection conn = DriverManager.getConnection(CONN, USER, PASS);
       Statement statement = conn.createStatement();
       ResultSet resultSet = statement.executeQuery("SELECT COUNT(id) AS id FROM Todolist_" + CPUid());
       if (resultSet.next()) {
         return resultSet.getInt(1);
       }
-      conn.close();
+   //   conn.close();
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -162,8 +159,6 @@ public class TodoClass {
       int addToIndex2 = num() + 1;
       System.err.println("Индекс изменен на: " + addToIndex2);
       try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(CONN, USER, PASS);
 
         //Получаем данные
         Date dateNow = new Date();
@@ -178,7 +173,7 @@ public class TodoClass {
         // Записываем все данные в Базу Данных
         preparedStmt.execute();
         System.err.println("Заметка сохранена!");
-        conn.close();
+    //    conn.close();
       } catch (Exception e) {
         System.err.println(e.getMessage());
       }
@@ -191,15 +186,13 @@ public class TodoClass {
     String indexText = commandArray[1];
     int addToIndex = Integer.parseInt(indexText);
     try {
-      Class.forName("com.mysql.cj.jdbc.Driver");
-      Connection conn = DriverManager.getConnection(CONN, USER, PASS);
       String query = "update Todolist_" + CPUid() + " SET text = ? WHERE id = ?";
       PreparedStatement preparedStmt = conn.prepareStatement(query);
       preparedStmt.setInt(2, addToIndex);
       preparedStmt.setString(1, todoTextEdit);
       preparedStmt.executeUpdate();
       System.err.println("Заметка изменена!");
-      conn.close();
+   //   conn.close();
     } catch (Exception e) {
       System.err.println(e.getMessage());
     }
@@ -210,13 +203,11 @@ public class TodoClass {
       System.err.println("Заметок нет! Зачем их удалять :)");
     } else if (command.equals(COMMAND_DELETE_ALL) || command.equals(COMMAND_DELETE_ALL_RU)) {
       try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(CONN, USER, PASS);
         String query3 = "DELETE FROM Todolist_" + CPUid() + " WHERE id";
         PreparedStatement preparedStmt = conn.prepareStatement(query3);
         preparedStmt.executeUpdate(query3);
         System.err.println("Заметки удалены!");
-        conn.close();
+   //     conn.close();
       } catch (Exception e) {
         System.err.println(e.getMessage());
       }
@@ -228,8 +219,6 @@ public class TodoClass {
     int indexRemove = Integer.parseInt(todoTextDelete);
     int indexReSetId = Integer.parseInt(todoTextDelete);
     try {
-      Class.forName("com.mysql.cj.jdbc.Driver");
-      Connection conn = DriverManager.getConnection(CONN, USER, PASS);
       String query3 = "DELETE FROM Todolist_" + CPUid() + " WHERE id = ?";
       String query4 = "UPDATE Todolist_" + CPUid() +  " SET id = id - 1 WHERE id >= ?";
       PreparedStatement preparedStmt = conn.prepareStatement(query3);
@@ -239,38 +228,9 @@ public class TodoClass {
       preparedStmt.executeUpdate();
       preparedStmt2.executeUpdate();
       System.err.println("Заметка удалена!\n>");
-      conn.close();
+ //     conn.close();
     } catch (Exception e) {
       System.err.println(e.getMessage());
     }
   }
 }
-//  public void list() {
-//    if (num() == 0) {
-//      System.err.println("Заметок нет!");
-//    } else {
-//      try {
-//        Class.forName("com.mysql.cj.jdbc.Driver");
-//        Connection conn = DriverManager.getConnection(CONN, USER, PASS);
-//        //Получаем данные и выводим
-//        Statement statement = conn.createStatement();
-//        String sql = "SELECT id, text, time FROM Todolist_" + CPUid() + "ORDER BY id ASC";
-//        ResultSet rs = statement.executeQuery(sql);
-//        System.err.println("Список всех заметок: ");
-//        while (rs.next()) {
-//          String id = rs.getString("id");
-//          String text = rs.getString("text");
-//          String time = rs.getString("time");
-//          //Вывод данных
-//          // todoList.put(id, text);
-//          System.out.print("\n" + id + ". " + text + " | Дата создания: " + time);
-//        }
-//        System.out.println();
-//        rs.close();
-//        conn.close();
-//        statement.close();
-//      } catch (Exception e) {
-//        System.err.println(e.getMessage());
-//      }
-//    }
-//  }

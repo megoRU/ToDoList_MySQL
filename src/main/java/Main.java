@@ -2,10 +2,14 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -14,18 +18,20 @@ import javax.swing.JFrame;
 import javax.swing.UnsupportedLookAndFeelException;
 import oshi.SystemInfo;
 
-class Main extends JFrame {
+class Main  extends JFrame  {
 
   private static final String CONN = "jdbc:mysql://95.181.157.159:3306/admin_todolist?useSSL=false&serverTimezone=UTC&characterEncoding=utf8";
   private static final String USER = "admin_todolist";
   private static final String PASS = "B0*cg1k0";
+  private final Connection conn = DriverManager.getConnection(CONN, USER, PASS);
+  private final Statement statement = conn.createStatement();
 
   private javax.swing.JTextArea jTextArea1;
   private javax.swing.JTextField jTextField1;
 
   public TodoClass todoClass = new TodoClass();
 
-  public Main() {
+  public Main() throws SQLException {
     initComponents();
     todoClass.getCreateTable();
     list();
@@ -42,6 +48,23 @@ class Main extends JFrame {
     super.setTitle("Список дел на Java");
     setIconImage(getImage());
     //CPUid();
+
+    frame.addWindowListener(new WindowAdapter()
+    {
+      @Override
+      public void windowClosing(WindowEvent e)
+      {
+        super.windowClosing(e);
+        // Do your disconnect from the DB here.
+        try {
+          conn.close();
+          statement.close();
+        } catch (SQLException throwables) {
+          throwables.printStackTrace();
+        }
+
+      }
+    });
   }
 
   private static final String CPUid() {
@@ -73,6 +96,7 @@ class Main extends JFrame {
     jTextArea1 = new javax.swing.JTextArea();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
     setBackground(new java.awt.Color(0, 128, 128));
 
     jPanel1.setBackground(new java.awt.Color(0, 128, 128));
@@ -250,7 +274,6 @@ class Main extends JFrame {
           }
         }
       } catch (Exception e) {
-        jTextArea1.setText(e.getMessage());
         e.printStackTrace();
       }
     });
@@ -363,12 +386,12 @@ class Main extends JFrame {
   public int num() {
     try {
       Class.forName("com.mysql.cj.jdbc.Driver");
-      Connection conn = DriverManager.getConnection(CONN, USER, PASS);
-      Statement statement = conn.createStatement();
-      ResultSet resultSet = statement.executeQuery("SELECT COUNT(id) AS id FROM Todolist_" + CPUid());
-      if (resultSet.next()) {
-        return resultSet.getInt(1);
+      ResultSet rs = statement.executeQuery("SELECT COUNT(id) AS id FROM Todolist_" + CPUid());
+
+      if (rs.next()) {
+        return rs.getInt(1);
       }
+      rs.close();
     } catch (Exception ignored) {
     }
     return 0;
@@ -380,10 +403,7 @@ class Main extends JFrame {
       jTextArea1.setText("Заметок нет!");
     } else {
       try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(CONN, USER, PASS);
         //Получаем данные и выводим
-        Statement statement = conn.createStatement();
         String sql = "SELECT id, text, time FROM Todolist_" + CPUid() + " ORDER BY id ASC";
         ResultSet rs = statement.executeQuery(sql);
         //  jTextArea1.append("Список всех заметок: ");
@@ -398,8 +418,8 @@ class Main extends JFrame {
         }
         System.out.println();
         rs.close();
-        conn.close();
-        statement.close();
+      //  conn.close();
+      //  statement.close();
       } catch (Exception e) {
         jTextArea1.setText(e.getMessage());
         System.err.println(e.getMessage());
@@ -420,7 +440,13 @@ class Main extends JFrame {
       java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
     }
 
-    java.awt.EventQueue.invokeLater(() -> new Main().setVisible(true));
+    java.awt.EventQueue.invokeLater(() -> {
+      try {
+        new Main().setVisible(true);
+      } catch (SQLException throwables) {
+        throwables.printStackTrace();
+      }
+    });
   }
   // End of variables declaration
 }
