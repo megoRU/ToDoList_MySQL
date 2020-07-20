@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Java_ToDoList_MySQL" target="1.8" />
+      <module name="Java_ToDoList_MySQL" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>
