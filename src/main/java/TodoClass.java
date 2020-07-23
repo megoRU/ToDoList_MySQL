@@ -77,6 +77,7 @@ public class TodoClass extends JFrame {
       PreparedStatement preparedStatement = conn.prepareStatement(SQL_CREATE);
       preparedStatement.executeUpdate();
     } catch (Exception e) {
+      e.printStackTrace();
       System.err.println(e.getMessage());
     }
   }
