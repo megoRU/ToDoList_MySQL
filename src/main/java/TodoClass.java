@@ -235,7 +235,7 @@ public class TodoClass extends JFrame {
       preparedStmt2.setInt(1, indexReSetId);
       preparedStmt.executeUpdate();
       preparedStmt2.executeUpdate();
-      System.err.println("Заметка удалена!\n>");
+      System.err.println("Заметка удалена!");
  //     conn.close();
     } catch (Exception e) {
       System.err.println(e.getMessage());

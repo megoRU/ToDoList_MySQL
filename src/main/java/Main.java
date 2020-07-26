@@ -40,12 +40,11 @@ class Main  extends JFrame  {
     Dimension screenSize = toolkit.getScreenSize();
     JFrame frame = new JFrame("Demo");
     frame.setSize(550, 600);
-    //Calculate the frame location
-    int x = (screenSize.width - frame.getWidth()) / 2;
-    int y = (screenSize.height - frame.getHeight()) / 2;
-    //Set the new frame location
-    frame.setLocation(x, y);
-    setLocation(x, y);
+    setResizable(false);
+    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+    this.setLocation(
+        dim.width/2-this.getSize().width/2,
+        dim.height/2-this.getSize().height/2);
     super.setTitle("Список дел на Java");
     setIconImage(getImage());
     //CPUid();
