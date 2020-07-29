@@ -36,8 +36,6 @@ class Main  extends JFrame  {
     initComponents();
     todoClass.getCreateTable();
     list();
-    Toolkit toolkit = Toolkit.getDefaultToolkit();
-    Dimension screenSize = toolkit.getScreenSize();
     JFrame frame = new JFrame("Demo");
     frame.setSize(550, 600);
     setResizable(false);
@@ -68,11 +66,11 @@ class Main  extends JFrame  {
     });
   }
 
-  private static final String CPUid() {
+  private static String CPUid() {
     SystemInfo si = new SystemInfo();
     String processorId = si.getHardware().getProcessor().toString();
-    String[] prcessorIdMassive = processorId.split("\\s+"); //prcessorIdMassive[26]
-    return prcessorIdMassive[26];
+    String[] cpuId = processorId.split("\\s+"); //cpuId[26]
+    return cpuId[26];
   }
 
   private Image getImage() {
