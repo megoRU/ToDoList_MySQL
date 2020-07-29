@@ -7,13 +7,10 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import junit.framework.TestCase;
-import org.junit.Test;
 import oshi.SystemInfo;
 
 public class TodoClassTest extends TestCase {
 
-  TodoClass todoClass;
-  Main main;
   private static final String CONN = "jdbc:mysql://95.181.157.159:3306/admin_todolist?useSSL=false&serverTimezone=UTC&characterEncoding=utf8";
   private static final String USER = "admin_todolist";
   private static final String PASS = "B0*cg1k0";
@@ -25,7 +22,7 @@ public class TodoClassTest extends TestCase {
   }
 
   @Override
-  protected void setUp() throws SQLException {
+  protected void setUp() {
 
   }
 
@@ -50,7 +47,6 @@ public class TodoClassTest extends TestCase {
     return prcessorIdMassive[26];
   }
 
-  @Test
   public void testaddText() throws Exception {
     String query3 = "DELETE FROM Todolist_" + getCPUid() + " WHERE id = 1";
     PreparedStatement preparedStmts = conn.prepareStatement(query3);
@@ -75,10 +71,7 @@ public class TodoClassTest extends TestCase {
     while (rs.next()) {
       String text = rs.getString("text");
 
-      String actual = todoText;
-      String expected = text;
-
-      assertEquals(expected, actual);
+      assertEquals(text, todoText);
     }
 
     String query4 = "DELETE FROM Todolist_BFEBFBFF000306C3" + " WHERE id = 1";
