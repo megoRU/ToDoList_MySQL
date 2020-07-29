@@ -1,5 +1,3 @@
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -91,11 +89,11 @@ public class TodoClass extends JFrame {
   }
 
 
-  private static final String CPUid() {
+  private static String CPUid() {
     SystemInfo si = new SystemInfo();
     String processorId = si.getHardware().getProcessor().toString();
-    String[] prcessorIdMassive = processorId.split("\\s+"); //prcessorIdMassive[26]
-    return prcessorIdMassive[26];
+    String[] cpuId = processorId.split("\\s+"); //cpuId[26]
+    return cpuId[26];
   }
 
   public void addText(String command) {
