@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Date;
 import javax.swing.JFrame;
 import oshi.SystemInfo;
@@ -104,8 +105,9 @@ public class TodoClass extends JFrame {
       String dateADD = formatForDateNow.format(dateNow);
       String query = "INSERT INTO Todolist_" + CPUid() + " (id, text, time)" + " values (?, ?, ?)";
       PreparedStatement preparedStmt = conn.prepareStatement(query);
+      String encodedString = Base64.getEncoder().encodeToString(todoText.getBytes());
       preparedStmt.setInt(1, num() + 1); // Получаем "длину" таблицы и прибавляем 1
-      preparedStmt.setString(2, todoText);
+      preparedStmt.setString(2, encodedString);
       preparedStmt.setString(3, dateADD);
       preparedStmt.execute(); //Записываем данные в БД
       System.err.println("Заметка сохранена!");
@@ -124,8 +126,9 @@ public class TodoClass extends JFrame {
       String dateADD = formatForDateNow.format(dateNow);
       String query = "INSERT INTO Todolist_" + CPUid() + " (id, text, time)" + " values (?, ?, ?)";
       PreparedStatement preparedStmt = conn.prepareStatement(query);
+      String encodedString = Base64.getEncoder().encodeToString(todoText[1].getBytes());
       preparedStmt.setInt(1, num() + 1); // Получаем "длину" таблицы и прибавляем 1
-      preparedStmt.setString(2, todoText[1]);
+      preparedStmt.setString(2, encodedString);
       preparedStmt.setString(3, dateADD);
       preparedStmt.execute(); //Записываем данные в БД
       System.err.println("Заметка сохранена!");
@@ -172,8 +175,9 @@ public class TodoClass extends JFrame {
         String dateADD = formatForDateNow.format(dateNow);
         String query = "INSERT INTO Todolist_" + CPUid() + " (id, text, time)" + " values (?, ?, ?)";
         PreparedStatement preparedStmt = conn.prepareStatement(query);
+        String encodedString = Base64.getEncoder().encodeToString(todoTextAddToIndex.getBytes());
         preparedStmt.setInt(1, addToIndex2);
-        preparedStmt.setString(2, todoTextAddToIndex);
+        preparedStmt.setString(2, encodedString);
         preparedStmt.setString(3, dateADD);
 
         // Записываем все данные в Базу Данных
@@ -194,8 +198,9 @@ public class TodoClass extends JFrame {
     try {
       String query = "update Todolist_" + CPUid() + " SET text = ? WHERE id = ?";
       PreparedStatement preparedStmt = conn.prepareStatement(query);
+      String encodedString = Base64.getEncoder().encodeToString(todoTextEdit.getBytes());
       preparedStmt.setInt(2, addToIndex);
-      preparedStmt.setString(1, todoTextEdit);
+      preparedStmt.setString(1, encodedString);
       preparedStmt.executeUpdate();
       System.err.println("Заметка изменена!");
    //   conn.close();

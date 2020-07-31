@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Base64;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -410,10 +411,12 @@ class Main  extends JFrame  {
           String id = rs.getString("id");
           String text = rs.getString("text");
           String time = rs.getString("time");
+          byte[] decodedBytes = Base64.getDecoder().decode(text);
+          String decodedString = new String(decodedBytes);
           //Вывод данных
           // todoList.put(id, text);
           //jTextArea1.append("\n" + id + ". " + text + " | Дата создания: " + time);
-          jTextArea1.append(id + ". " + text + " | Дата создания: " + time + "\n");
+          jTextArea1.append(id + ". " + decodedString + " | Дата создания: " + time + "\n");
         }
         System.out.println();
         rs.close();

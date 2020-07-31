@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Date;
 import junit.framework.TestCase;
 import oshi.SystemInfo;
@@ -54,12 +55,13 @@ public class TodoClassTest extends TestCase {
     String command = "Привет  ";
     String todoText = command.trim();
     Date dateNow = new Date();
+    String encodedString = Base64.getEncoder().encodeToString(todoText.getBytes());
     SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
     String dateADD = formatForDateNow.format(dateNow);
     String query = "INSERT INTO Todolist_BFEBFBFF000306C3" + " (id, text, time)" + " values (?, ?, ?)";
     PreparedStatement preparedStmt = conn.prepareStatement(query);
     preparedStmt.setInt(1, num() + 1); // Получаем "длину" таблицы и прибавляем 1
-    preparedStmt.setString(2, todoText);
+    preparedStmt.setString(2, encodedString);
     preparedStmt.setString(3, dateADD);
     preparedStmt.execute(); //Записываем данные в БД
     //conn.close();
@@ -70,8 +72,9 @@ public class TodoClassTest extends TestCase {
 
     while (rs.next()) {
       String text = rs.getString("text");
-
-      assertEquals(text, todoText);
+      byte[] decodedBytes = Base64.getDecoder().decode(text);
+      String decodedString = new String(decodedBytes);
+      assertEquals(decodedString, todoText);
     }
 
     String query4 = "DELETE FROM Todolist_BFEBFBFF000306C3" + " WHERE id = 1";
