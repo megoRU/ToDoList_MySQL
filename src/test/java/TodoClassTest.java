@@ -17,14 +17,15 @@ public class TodoClassTest extends TestCase {
   private static final String PASS = "B0*cg1k0";
   private final Connection conn = DriverManager.getConnection(CONN, USER, PASS);
   private final Statement statement = conn.createStatement();
-
+  private final Base64Class base64Class = new Base64Class();
+  private final TodoClass todoClass = new TodoClass();
   public TodoClassTest() throws SQLException {
 
   }
 
   @Override
-  protected void setUp() {
-
+  protected void setUp() throws SQLException {
+    todoClass.deleteAll("удалить все");
   }
 
   public int num() {
@@ -55,7 +56,7 @@ public class TodoClassTest extends TestCase {
     String command = "Привет  ";
     String todoText = command.trim();
     Date dateNow = new Date();
-    String encodedString = Base64.getEncoder().encodeToString(todoText.getBytes());
+    String encodedString = base64Class.encrypt(todoText);
     SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
     String dateADD = formatForDateNow.format(dateNow);
     String query = "INSERT INTO Todolist_BFEBFBFF000306C3" + " (id, text, time)" + " values (?, ?, ?)";
@@ -72,14 +73,12 @@ public class TodoClassTest extends TestCase {
 
     while (rs.next()) {
       String text = rs.getString("text");
-      byte[] decodedBytes = Base64.getDecoder().decode(text);
-      String decodedString = new String(decodedBytes);
+      String decodedString = base64Class.decrypt(text);
       assertEquals(decodedString, todoText);
     }
 
-    String query4 = "DELETE FROM Todolist_BFEBFBFF000306C3" + " WHERE id = 1";
-    PreparedStatement preparedStmtss = conn.prepareStatement(query3);
-    preparedStmtss.executeUpdate(query4);
+    //todoClass.deleteAll("удалить все");
+
 
   }
 
