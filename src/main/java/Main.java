@@ -10,7 +10,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Base64;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -28,6 +27,7 @@ class Main  extends JFrame  {
   private javax.swing.JTextArea jTextArea1;
   private javax.swing.JTextField jTextField1;
   public TodoClass todoClass = new TodoClass();
+  public Base64Class base64Class = new Base64Class();
 
   public Connection getConn() {
     return conn;
@@ -411,8 +411,7 @@ class Main  extends JFrame  {
           String id = rs.getString("id");
           String text = rs.getString("text");
           String time = rs.getString("time");
-          byte[] decodedBytes = Base64.getDecoder().decode(text);
-          String decodedString = new String(decodedBytes);
+          String decodedString = base64Class.decrypt(text);
           //Вывод данных
           // todoList.put(id, text);
           //jTextArea1.append("\n" + id + ". " + text + " | Дата создания: " + time);

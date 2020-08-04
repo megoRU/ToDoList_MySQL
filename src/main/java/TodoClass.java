@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
-import java.util.Base64;
 import java.util.Date;
 import javax.swing.JFrame;
 import oshi.SystemInfo;
@@ -28,6 +27,7 @@ public class TodoClass extends JFrame {
   public final String COMMAND_DELETE_BD = "удалить бд";
   public final String ALL_LETTERS_AND_NUMBERS = "^[A-ZА-Я]+[А-Яа-яA-Za-z0-9\\s+]+";
   private final Connection conn = DriverManager.getConnection(CONN, USER, PASS);
+  public Base64Class base64Class = new Base64Class();
 
   public Connection getConn() {
     return conn;
@@ -105,7 +105,7 @@ public class TodoClass extends JFrame {
       String dateADD = formatForDateNow.format(dateNow);
       String query = "INSERT INTO Todolist_" + CPUid() + " (id, text, time)" + " values (?, ?, ?)";
       PreparedStatement preparedStmt = conn.prepareStatement(query);
-      String encodedString = Base64.getEncoder().encodeToString(todoText.getBytes());
+      String encodedString = base64Class.encrypt(todoText);
       preparedStmt.setInt(1, num() + 1); // Получаем "длину" таблицы и прибавляем 1
       preparedStmt.setString(2, encodedString);
       preparedStmt.setString(3, dateADD);
@@ -126,7 +126,7 @@ public class TodoClass extends JFrame {
       String dateADD = formatForDateNow.format(dateNow);
       String query = "INSERT INTO Todolist_" + CPUid() + " (id, text, time)" + " values (?, ?, ?)";
       PreparedStatement preparedStmt = conn.prepareStatement(query);
-      String encodedString = Base64.getEncoder().encodeToString(todoText[1].getBytes());
+      String encodedString = base64Class.encrypt(todoText[1]);
       preparedStmt.setInt(1, num() + 1); // Получаем "длину" таблицы и прибавляем 1
       preparedStmt.setString(2, encodedString);
       preparedStmt.setString(3, dateADD);
@@ -175,7 +175,7 @@ public class TodoClass extends JFrame {
         String dateADD = formatForDateNow.format(dateNow);
         String query = "INSERT INTO Todolist_" + CPUid() + " (id, text, time)" + " values (?, ?, ?)";
         PreparedStatement preparedStmt = conn.prepareStatement(query);
-        String encodedString = Base64.getEncoder().encodeToString(todoTextAddToIndex.getBytes());
+        String encodedString = base64Class.encrypt(todoTextAddToIndex);
         preparedStmt.setInt(1, addToIndex2);
         preparedStmt.setString(2, encodedString);
         preparedStmt.setString(3, dateADD);
@@ -198,7 +198,7 @@ public class TodoClass extends JFrame {
     try {
       String query = "update Todolist_" + CPUid() + " SET text = ? WHERE id = ?";
       PreparedStatement preparedStmt = conn.prepareStatement(query);
-      String encodedString = Base64.getEncoder().encodeToString(todoTextEdit.getBytes());
+      String encodedString = base64Class.encrypt(todoTextEdit);
       preparedStmt.setInt(2, addToIndex);
       preparedStmt.setString(1, encodedString);
       preparedStmt.executeUpdate();
