@@ -24,7 +24,11 @@ public class TodoClassTest extends TestCase {
 
   @Override
   protected void setUp() throws SQLException {
-    todoClass.deleteAll("удалить все");
+    if (num() > 1) {
+      todoClass.deleteAll("удалить все");
+    } else {
+      System.out.println("Удалять не надо");
+    }
   }
 
   public int num() {
@@ -69,18 +73,13 @@ public class TodoClassTest extends TestCase {
     String sql = "SELECT text FROM Todolist_" + getCPUid() + " ORDER BY id ASC";
     ResultSet rs = statement.executeQuery(sql);
 
-
     while (rs.next()) {
       String text = rs.getString("text");
       String decodedString = base64Class.decrypt(text);
       assertEquals(decodedString, todoText);
     }
-
-    //todoClass.deleteAll("удалить все");
-
-
+    todoClass.deleteAll("удалить все");
+    conn.close();
+    preparedStmt.close();
   }
-
-
-
 }
