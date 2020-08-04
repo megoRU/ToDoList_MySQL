@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
-import java.util.Base64;
 import java.util.Date;
 import junit.framework.TestCase;
 import oshi.SystemInfo;
