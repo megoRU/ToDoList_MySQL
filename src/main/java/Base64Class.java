@@ -1,42 +1,39 @@
 import java.nio.charset.StandardCharsets;
-import org.apache.commons.codec.binary.Base64;
-import oshi.SystemInfo;
+import java.util.Arrays;
+import java.util.Base64;
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 public class Base64Class {
 
-  private final String KEY = CPUid();
-
-  public String encrypt(final String text) {
-    return Base64.encodeBase64String(xor(text.getBytes()));
-  }
-
-  public String decrypt(final String hash) {
-    return new String(xor(Base64.decodeBase64(hash.getBytes())), StandardCharsets.UTF_8);
-  }
-
-  private byte[] xor(final byte[] input) {
-    final byte[] output = new byte[input.length];
-    final byte[] secret = KEY.getBytes();
-    int spos = 0;
-    for (int pos = 0; pos < input.length; ++pos) {
-      output[pos] = (byte) (input[pos] ^ secret[spos]);
-      spos += 1;
-      if (spos >= secret.length) {
-        spos = 0;
-      }
+  protected static String encrypt(final String secret, final String data) {
+    byte[] decodedKey = Base64.getDecoder().decode(secret);
+    try {
+      Cipher cipher = Cipher.getInstance("AES");
+      // rebuild key using SecretKeySpec
+      SecretKey originalKey = new SecretKeySpec(Arrays.copyOf(decodedKey, 16), "AES");
+      cipher.init(Cipher.ENCRYPT_MODE, originalKey);
+      byte[] cipherText = cipher.doFinal(data.getBytes(StandardCharsets.UTF_8));
+      return Base64.getEncoder().encodeToString(cipherText);
+    } catch (Exception e) {
+      throw new RuntimeException(
+          "Error occured while encrypting data", e);
     }
-    return output;
   }
 
-  private String CPUid() {
-    SystemInfo si = new SystemInfo();
-    String processorId = si.getHardware().getProcessor().toString();
-    String[] cpuId = processorId.split("\\s+"); //cpuId[26]
-    System.out.println(cpuId[26]);
-    return cpuId[26];
-  }
-
-  public void getCPUid(){
-    CPUid();
+  protected static String decrypt(final String secret, final String encryptedString) {
+    byte[] decodedKey = Base64.getDecoder().decode(secret);
+    try {
+      Cipher cipher = Cipher.getInstance("AES");
+      // rebuild key using SecretKeySpec
+      SecretKey originalKey = new SecretKeySpec(Arrays.copyOf(decodedKey, 16), "AES");
+      cipher.init(Cipher.DECRYPT_MODE, originalKey);
+      byte[] cipherText = cipher.doFinal(Base64.getDecoder().decode(encryptedString));
+      return new String(cipherText);
+    } catch (Exception e) {
+      throw new RuntimeException(
+          "Error occured while decrypting data", e);
+    }
   }
 }

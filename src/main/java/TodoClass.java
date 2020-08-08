@@ -1,7 +1,3 @@
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -31,8 +27,6 @@ public class TodoClass extends JFrame {
   public final String COMMAND_DELETE_BD = "удалить бд";
   public final String ALL_LETTERS_AND_NUMBERS = "^[A-ZА-Я]+[А-Яа-яA-Za-z0-9\\s+]+";
   private final Connection conn = DriverManager.getConnection(CONN, USER, PASS);
-  private final Base64Class base64Class = new Base64Class();
-  private final String userName = System.getProperty("user.name");
 
   public Connection getConn() {
     return conn;
@@ -52,9 +46,16 @@ public class TodoClass extends JFrame {
   private static final String CONN = "jdbc:mysql://95.181.157.159:3306/admin_todolist?useSSL=false&serverTimezone=UTC&characterEncoding=utf8";
   private static final String USER = "admin_todolist";
   private static final String PASS = "B0*cg1k0";
-  private static final String SQL_DROP_TABLE = "DROP TABLE Todolist_" + CPUid();
 
-  private static final String SQL_CREATE = "CREATE TABLE IF NOT EXISTS Todolist_" + CPUid()
+  public static String getNameBD() {
+    return nameBD;
+  }
+
+  private static final String nameBD = Base64Class.encrypt(CPUid(), CPUid()).substring(0, 8);
+  private static final String SQL_DROP_TABLE = "DROP TABLE Todolist_" + nameBD;
+
+
+  private static final String SQL_CREATE = "CREATE TABLE IF NOT EXISTS Todolist_" + nameBD
       + " ("
       + " id int(6) NOT NULL AUTO_INCREMENT,"
       + " text varchar(255) NOT NULL,"
@@ -98,11 +99,7 @@ public class TodoClass extends JFrame {
     SystemInfo si = new SystemInfo();
     String processorId = si.getHardware().getProcessor().toString();
     String[] cpuId = processorId.split("\\s+"); //cpuId[26]
-    return cpuId[26];
-  }
-
-  public void getCPUid(){
-    System.out.println(CPUid());
+    return cpuId[26].substring(0, 8);
   }
 
   public void addText(String command) {
@@ -111,34 +108,12 @@ public class TodoClass extends JFrame {
       Date dateNow = new Date();
       SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
       String dateADD = formatForDateNow.format(dateNow);
-      String query = "INSERT INTO Todolist_" + CPUid() + " (id, text, time)" + " values (?, ?, ?)";
+      String query = "INSERT INTO Todolist_" + getNameBD() + " (id, text, time)" + " values (?, ?, ?)";
       PreparedStatement preparedStmt = conn.prepareStatement(query);
-      String encodedString = base64Class.encrypt(todoText);
+      String encodedString = Base64Class.encrypt(CPUid(), todoText);
       preparedStmt.setInt(1, num() + 1); // Получаем "длину" таблицы и прибавляем 1
       preparedStmt.setString(2, encodedString);
-      System.out.println(base64Class.encrypt(todoText));
-      try(FileWriter writer = new FileWriter(
-          "C:/Users/" + userName + "/Desktop/" + "todolist" + ".txt",
-          StandardCharsets.UTF_8, true))
-      {
-        BufferedWriter bufferWriter = new BufferedWriter(writer);
-        // запись всей строки
-        String text = base64Class.encrypt(todoText);
-        bufferWriter.write(text);
-        String lineSeparator = System.getProperty("line.separator");
-
-        // запись по символам
-        bufferWriter.append(lineSeparator);
-
-        bufferWriter.flush();
-        bufferWriter.close();
-        writer.close();
-      }
-      catch(IOException ex){
-
-        System.out.println(ex.getMessage());
-      }
-
+      System.out.println(Base64Class.encrypt(CPUid(), todoText));
       preparedStmt.setString(3, dateADD);
       preparedStmt.execute(); //Записываем данные в БД
       System.err.println("Заметка сохранена!");
@@ -155,11 +130,11 @@ public class TodoClass extends JFrame {
       //Нужно проверить + дописать для секунд
       SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
       String dateADD = formatForDateNow.format(dateNow);
-      String query = "INSERT INTO Todolist_" + CPUid() + " (id, text, time)" + " values (?, ?, ?)";
+      String query = "INSERT INTO Todolist_" + getNameBD() + " (id, text, time)" + " values (?, ?, ?)";
       PreparedStatement preparedStmt = conn.prepareStatement(query);
-      String encodedString = base64Class.encrypt(todoText[1]);
+      String encodedString = Base64Class.encrypt(CPUid(), todoText[1]);
       preparedStmt.setInt(1, num() + 1); // Получаем "длину" таблицы и прибавляем 1
-      preparedStmt.setString(2, base64Class.encrypt(todoText[1]));
+      preparedStmt.setString(2, encodedString);
       preparedStmt.setString(3, dateADD);
       preparedStmt.execute(); //Записываем данные в БД
       System.err.println("Заметка сохранена!");
@@ -175,7 +150,7 @@ public class TodoClass extends JFrame {
   public int num() {
     try {
       Statement statement = conn.createStatement();
-      ResultSet resultSet = statement.executeQuery("SELECT COUNT(id) AS id FROM Todolist_" + CPUid());
+      ResultSet resultSet = statement.executeQuery("SELECT COUNT(id) AS id FROM Todolist_" + getNameBD());
       if (resultSet.next()) {
         return resultSet.getInt(1);
       }
@@ -204,11 +179,11 @@ public class TodoClass extends JFrame {
         Date dateNow = new Date();
         SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
         String dateADD = formatForDateNow.format(dateNow);
-        String query = "INSERT INTO Todolist_" + CPUid() + " (id, text, time)" + " values (?, ?, ?)";
+        String query = "INSERT INTO Todolist_" + getNameBD() + " (id, text, time)" + " values (?, ?, ?)";
         PreparedStatement preparedStmt = conn.prepareStatement(query);
-        String encodedString = base64Class.encrypt(todoTextAddToIndex);
+        String encodedString = Base64Class.encrypt(CPUid(), todoTextAddToIndex);
         preparedStmt.setInt(1, addToIndex2);
-        preparedStmt.setString(2, base64Class.encrypt(todoTextAddToIndex));
+        preparedStmt.setString(2, encodedString);
         preparedStmt.setString(3, dateADD);
 
         // Записываем все данные в Базу Данных
@@ -227,9 +202,9 @@ public class TodoClass extends JFrame {
     String indexText = commandArray[1];
     int addToIndex = Integer.parseInt(indexText);
     try {
-      String query = "update Todolist_" + CPUid() + " SET text = ? WHERE id = ?";
+      String query = "update Todolist_" + getNameBD() + " SET text = ? WHERE id = ?";
       PreparedStatement preparedStmt = conn.prepareStatement(query);
-      String encodedString = base64Class.encrypt(todoTextEdit);
+      String encodedString = Base64Class.encrypt(CPUid(), todoTextEdit);
       preparedStmt.setInt(2, addToIndex);
       preparedStmt.setString(1, encodedString);
       preparedStmt.executeUpdate();
@@ -245,7 +220,7 @@ public class TodoClass extends JFrame {
       System.err.println("Заметок нет! Зачем их удалять :)");
     } else if (command.equals(COMMAND_DELETE_ALL) || command.equals(COMMAND_DELETE_ALL_RU)) {
       try {
-        String query3 = "DELETE FROM Todolist_" + CPUid() + " WHERE id";
+        String query3 = "DELETE FROM Todolist_" + getNameBD() + " WHERE id";
         PreparedStatement preparedStmt = conn.prepareStatement(query3);
         preparedStmt.executeUpdate(query3);
         System.err.println("Заметки удалены!");
@@ -261,8 +236,8 @@ public class TodoClass extends JFrame {
     int indexRemove = Integer.parseInt(todoTextDelete);
     int indexReSetId = Integer.parseInt(todoTextDelete);
     try {
-      String query3 = "DELETE FROM Todolist_" + CPUid() + " WHERE id = ?";
-      String query4 = "UPDATE Todolist_" + CPUid() +  " SET id = id - 1 WHERE id >= ?";
+      String query3 = "DELETE FROM Todolist_" + getNameBD() + " WHERE id = ?";
+      String query4 = "UPDATE Todolist_" + getNameBD() +  " SET id = id - 1 WHERE id >= ?";
       PreparedStatement preparedStmt = conn.prepareStatement(query3);
       PreparedStatement preparedStmt2 = conn.prepareStatement(query4);
       preparedStmt.setInt(1, indexRemove);
@@ -273,35 +248,6 @@ public class TodoClass extends JFrame {
  //     conn.close();
     } catch (Exception e) {
       System.err.println(e.getMessage());
-    }
-  }
-
-
-  public void list(String input) {
-    if (num() == 0) {
-      System.err.println("Заметок нет!");
-    } else {
-      try {
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(CONN, USER, PASS);
-        //Получаем данные и выводим
-        Statement statement = conn.createStatement();
-        String sql = "SELECT id, text FROM Todolist ORDER BY id ASC";
-        ResultSet rs = statement.executeQuery(sql);
-        System.err.println("Список всех заметок: ");
-        while (rs.next()) {
-          String id = rs.getString("id");
-          String text = rs.getString("text");
-          //Вывод данных
-          System.out.print("\n" + id + ". " + text);
-        }
-        System.out.println();
-        rs.close();
-        conn.close();
-      } catch (Exception e) {
-        System.err.println("Получена ошибка!");
-        System.err.println(e.getMessage());
-      }
     }
   }
 }

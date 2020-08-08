@@ -28,8 +28,6 @@ public class Main extends JFrame  {
   private javax.swing.JTextArea jTextArea1;
   private javax.swing.JTextField jTextField1;
   public TodoClass todoClass = new TodoClass();
-  public Base64Class base64Class = new Base64Class();
-
 
   public Connection getConn() {
     return conn;
@@ -48,7 +46,6 @@ public class Main extends JFrame  {
         dim.height/2-this.getSize().height/2);
     super.setTitle("Список дел на Java");
     setIconImage(getImage());
-    base64Class.getCPUid();
 
     frame.addWindowListener(new WindowAdapter()
     {
@@ -73,13 +70,86 @@ public class Main extends JFrame  {
     SystemInfo si = new SystemInfo();
     String processorId = si.getHardware().getProcessor().toString();
     String[] cpuId = processorId.split("\\s+"); //cpuId[26]
-    return cpuId[26];
+    return cpuId[26].substring(0, 8);
   }
 
   private Image getImage() {
     String fileName = "img/" + "icon" + ".png";
     ImageIcon icon = new ImageIcon(getClass().getResource(fileName));
     return icon.getImage();
+  }
+
+  public void textTransmission() {
+    //String someText = textFromJText;
+    jTextField1.getText();
+    try {
+      if (jTextField1.getText().equals("")) {
+        System.err.println("Should not be NULL");
+        jTextArea1.setText("Зачем пустая строка в базе данных?");
+      }
+      String inputLine = jTextField1.getText();
+      if (!jTextField1.getText().equals("")) {
+
+        if (inputLine.matches(todoClass.COMMAND_ADD_TO_INDEX)) {
+          todoClass.addToIndex(inputLine);
+          list();
+          jTextField1.setText("");
+        }
+        if (inputLine.matches(todoClass.ALL_LETTERS_AND_NUMBERS)) {
+          todoClass.addText(inputLine);
+          list();
+          jTextField1.setText("");
+        } else if (inputLine.matches(todoClass.COMMAND_ADD_TO_INDEX_RU)) {
+          todoClass.addToIndex(inputLine);
+          list();
+        } else if (inputLine.matches(todoClass.COMMAND_ADD)) {
+          todoClass.add(inputLine);
+          list();
+          jTextField1.setText("");
+        } else if (inputLine.matches(todoClass.COMMAND_ADD_RU)) {
+          todoClass.add(inputLine);
+          list();
+          jTextField1.setText("");
+        } else if (inputLine.matches(todoClass.COMMAND_DELETE_ALL_RU)) {
+          todoClass.deleteAll(inputLine);
+          list();
+          jTextField1.setText("");
+        } else if (inputLine.matches(todoClass.COMMAND_DELETE_ALL)) {
+          todoClass.deleteAll(inputLine);
+          list();
+          jTextField1.setText("");
+        } else if (inputLine.matches(todoClass.COMMAND_EDIT)) {
+          todoClass.editByIndex(inputLine);
+          list();
+          jTextField1.setText("");
+        } else if (inputLine.matches(todoClass.COMMAND_DELETE)) {
+          todoClass.deleteByIndex(inputLine);
+          list();
+          jTextField1.setText("");
+        } else if (inputLine.matches(todoClass.COMMAND_DEL)) {
+          todoClass.deleteByIndex(inputLine);
+          list();
+          jTextField1.setText("");
+        } else if (inputLine.matches(todoClass.COMMAND_EDIT_RU)) {
+          todoClass.editByIndex(inputLine);
+          list();
+          jTextField1.setText("");
+        } else if (inputLine.matches(todoClass.COMMAND_DELETE_RU)) {
+          todoClass.deleteByIndex(inputLine);
+          list();
+          jTextField1.setText("");
+        } else if (inputLine.matches(todoClass.COMMAND_DELETE_BD)) {
+          todoClass.getDropTable();
+          list();
+          jTextField1.setText("");
+        }
+        else {
+          jTextArea1.setText("Произошла ошибка." + "\n" + "Вы написали первое слово с маленькой буквы либо команда нераспознанна");
+        }
+      }
+    } catch (Exception ee) {
+      ee.printStackTrace();
+    }
   }
 
   // <editor-fold defaultstate="collapsed" desc="Generated Code">
@@ -131,155 +201,15 @@ public class Main extends JFrame  {
     jButton1.setText("Отправить");
     jButton1.setFocusable(false);
 
-    Action action = new AbstractAction()
-    {
+    Action action = new AbstractAction() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        jTextField1.getText();
-        try {
-          if (jTextField1.getText().equals("")) {
-            System.err.println("Should not be NULL");
-            jTextArea1.setText("Зачем пустая строка в базе данных?");
-          }
-          String inputLine = jTextField1.getText();
-          if (!jTextField1.getText().equals("")) {
-
-            if (inputLine.matches(todoClass.COMMAND_ADD_TO_INDEX)) {
-              todoClass.addToIndex(inputLine);
-              list();
-              jTextField1.setText("");
-            }
-            if (inputLine.matches(todoClass.ALL_LETTERS_AND_NUMBERS)) {
-              todoClass.addText(inputLine);
-              list();
-              jTextField1.setText("");
-            } else if (inputLine.matches(todoClass.COMMAND_ADD_TO_INDEX_RU)) {
-              todoClass.addToIndex(inputLine);
-              list();
-            } else if (inputLine.matches(todoClass.COMMAND_ADD)) {
-              todoClass.add(inputLine);
-              list();
-              jTextField1.setText("");
-            } else if (inputLine.matches(todoClass.COMMAND_ADD_RU)) {
-              todoClass.add(inputLine);
-              list();
-              jTextField1.setText("");
-            } else if (inputLine.matches(todoClass.COMMAND_DELETE_ALL_RU)) {
-              todoClass.deleteAll(inputLine);
-              list();
-              jTextField1.setText("");
-            } else if (inputLine.matches(todoClass.COMMAND_DELETE_ALL)) {
-              todoClass.deleteAll(inputLine);
-              list();
-              jTextField1.setText("");
-            } else if (inputLine.matches(todoClass.COMMAND_EDIT)) {
-              todoClass.editByIndex(inputLine);
-              list();
-              jTextField1.setText("");
-            } else if (inputLine.matches(todoClass.COMMAND_DELETE)) {
-              todoClass.deleteByIndex(inputLine);
-              list();
-              jTextField1.setText("");
-            } else if (inputLine.matches(todoClass.COMMAND_DEL)) {
-              todoClass.deleteByIndex(inputLine);
-              list();
-              jTextField1.setText("");
-            } else if (inputLine.matches(todoClass.COMMAND_EDIT_RU)) {
-              todoClass.editByIndex(inputLine);
-              list();
-              jTextField1.setText("");
-            } else if (inputLine.matches(todoClass.COMMAND_DELETE_RU)) {
-              todoClass.deleteByIndex(inputLine);
-              list();
-              jTextField1.setText("");
-            } else if (inputLine.matches(todoClass.COMMAND_DELETE_BD)) {
-              todoClass.getDropTable();
-              list();
-              jTextField1.setText("");
-            }
-            else {
-              jTextArea1.setText("Произошла ошибка." + "\n" + "Вы написали первое слово с маленькой буквы либо команда нераспознанна");
-            }
-          }
-        } catch (Exception ee) {
-          ee.printStackTrace();
-        }
+        textTransmission();
       }
     };
     jTextField1.addActionListener(action);
 
-    jButton1.addActionListener(evt -> {
-      //  jButton3ActionPerformed(evt);
-      //jTextArea1.add(input);
-      try {
-        if (jTextField1.getText().equals("")) {
-          System.err.println("Should not be NULL");
-          jTextArea1.setText("Зачем пустая строка в базе данных?");
-        }
-        String input = jTextField1.getText();
-        if (!jTextField1.getText().equals("")) {
-          if (input.matches(todoClass.COMMAND_ADD_TO_INDEX)) {
-            todoClass.addToIndex(input);
-            list();
-            jTextField1.setText("");
-          }
-          if (input.matches(todoClass.ALL_LETTERS_AND_NUMBERS)) {
-            String utf8String = new String(input.getBytes(StandardCharsets.UTF_8), "windows-1251");
-            todoClass.addText(utf8String);
-            list();
-            jTextField1.setText("");
-          } else if (input.matches(todoClass.COMMAND_ADD_TO_INDEX_RU)) {
-            todoClass.addToIndex(input);
-            list();
-            jTextField1.setText("");
-          } else if (input.matches(todoClass.COMMAND_ADD)) {
-            todoClass.add(input);
-            list();
-            jTextField1.setText("");
-          } else if (input.matches(todoClass.COMMAND_ADD_RU)) {
-            todoClass.add(input);
-            list();
-            jTextField1.setText("");
-          } else if (input.matches(todoClass.COMMAND_DELETE_ALL_RU)) {
-            todoClass.deleteAll(input);
-            list();
-            jTextField1.setText("");
-          } else if (input.matches(todoClass.COMMAND_DELETE_ALL)) {
-            todoClass.deleteAll(input);
-            list();
-            jTextField1.setText("");
-          } else if (input.matches(todoClass.COMMAND_EDIT)) {
-            todoClass.editByIndex(input);
-            list();
-            jTextField1.setText("");
-          } else if (input.matches(todoClass.COMMAND_DELETE)) {
-            todoClass.deleteByIndex(input);
-            list();
-            jTextField1.setText("");
-          } else if (input.matches(todoClass.COMMAND_DEL)) {
-            todoClass.deleteByIndex(input);
-            list();
-            jTextField1.setText("");
-          } else if (input.matches(todoClass.COMMAND_EDIT_RU)) {
-            todoClass.editByIndex(input);
-            list();
-            jTextField1.setText("");
-          } else if (input.matches(todoClass.COMMAND_DELETE_RU)) {
-            todoClass.deleteByIndex(input);
-            list();
-            jTextField1.setText("");
-          } else if (input.matches(todoClass.COMMAND_DELETE_BD)) {
-            todoClass.getDropTable();
-            list();
-            jTextField1.setText("");
-          } else {
-            jTextArea1.setText("Произошла ошибка." + "\n" + "Вы написали первое слово с маленькой буквы либо команда нераспознанна");
-          }
-        }
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    });
+    jButton1.addActionListener(evt -> textTransmission());
 
     jTextField1.addActionListener(evt -> jTextField1ActionPerformed());
 
@@ -389,7 +319,7 @@ public class Main extends JFrame  {
   public int num() {
     try {
       Class.forName("com.mysql.cj.jdbc.Driver");
-      ResultSet rs = statement.executeQuery("SELECT COUNT(id) AS id FROM Todolist_" + CPUid());
+      ResultSet rs = statement.executeQuery("SELECT COUNT(id) AS id FROM Todolist_" + TodoClass.getNameBD());
 
       if (rs.next()) {
         return rs.getInt(1);
@@ -407,19 +337,18 @@ public class Main extends JFrame  {
     } else {
       try {
         //Получаем данные и выводим
-        String sql = "SELECT id, text, time FROM Todolist_" + CPUid() + " ORDER BY id ASC";
+        String sql = "SELECT id, text, time FROM Todolist_" + TodoClass.getNameBD() + " ORDER BY id ASC";
         ResultSet rs = statement.executeQuery(sql);
         //  jTextArea1.append("Список всех заметок: ");
         while (rs.next()) {
           String id = rs.getString("id");
           String text = rs.getString("text");
           String time = rs.getString("time");
-          String decodedBytes = base64Class.decrypt(text);
+          String textFromBD = Base64Class.decrypt(CPUid(), text);
+          String utf8String = new String(textFromBD.getBytes("Cp1251"), StandardCharsets.UTF_8);
 
           //Вывод данных
-          // todoList.put(id, text);
-          //jTextArea1.append("\n" + id + ". " + text + " | Дата создания: " + time);
-          jTextArea1.append(id + ". " + decodedBytes + " | Дата создания: " + time + "\n");
+          jTextArea1.append(id + ". " + utf8String + " | Дата создания: " + time + "\n");
         }
         rs.close();
       //  conn.close();
