@@ -5,6 +5,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -17,7 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.UnsupportedLookAndFeelException;
 import oshi.SystemInfo;
 
-class Main  extends JFrame  {
+public class Main extends JFrame  {
 
   private static final String CONN = "jdbc:mysql://95.181.157.159:3306/admin_todolist?useSSL=false&serverTimezone=UTC&characterEncoding=utf8";
   private static final String USER = "admin_todolist";
@@ -28,6 +29,7 @@ class Main  extends JFrame  {
   private javax.swing.JTextField jTextField1;
   public TodoClass todoClass = new TodoClass();
   public Base64Class base64Class = new Base64Class();
+
 
   public Connection getConn() {
     return conn;
@@ -46,7 +48,7 @@ class Main  extends JFrame  {
         dim.height/2-this.getSize().height/2);
     super.setTitle("Список дел на Java");
     setIconImage(getImage());
-    //CPUid();
+    base64Class.getCPUid();
 
     frame.addWindowListener(new WindowAdapter()
     {
@@ -222,7 +224,8 @@ class Main  extends JFrame  {
             jTextField1.setText("");
           }
           if (input.matches(todoClass.ALL_LETTERS_AND_NUMBERS)) {
-            todoClass.addText(input);
+            String utf8String = new String(input.getBytes(StandardCharsets.UTF_8), "windows-1251");
+            todoClass.addText(utf8String);
             list();
             jTextField1.setText("");
           } else if (input.matches(todoClass.COMMAND_ADD_TO_INDEX_RU)) {
@@ -411,13 +414,13 @@ class Main  extends JFrame  {
           String id = rs.getString("id");
           String text = rs.getString("text");
           String time = rs.getString("time");
-          String decodedString = base64Class.decrypt(text);
+          String decodedBytes = base64Class.decrypt(text);
+
           //Вывод данных
           // todoList.put(id, text);
           //jTextArea1.append("\n" + id + ". " + text + " | Дата создания: " + time);
-          jTextArea1.append(id + ". " + decodedString + " | Дата создания: " + time + "\n");
+          jTextArea1.append(id + ". " + decodedBytes + " | Дата создания: " + time + "\n");
         }
-        System.out.println();
         rs.close();
       //  conn.close();
       //  statement.close();
