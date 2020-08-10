@@ -7,7 +7,6 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import junit.framework.TestCase;
-import oshi.SystemInfo;
 
 public class TodoClassTest extends TestCase {
 
@@ -45,12 +44,7 @@ public class TodoClassTest extends TestCase {
     return 0;
   }
 
-  public String getCPUid() {
-    SystemInfo si = new SystemInfo();
-    String processorId = si.getHardware().getProcessor().toString();
-    String[] prcessorIdMassive = processorId.split("\\s+"); //prcessorIdMassive[26]
-    return prcessorIdMassive[26];
-  }
+
 
   public void testaddText() throws Exception {
     String query3 = "DELETE FROM Todolist_" + TodoClass.getNameDB() + " WHERE id = 1";
