@@ -34,7 +34,7 @@ public class TodoClassTest extends TestCase {
   public int num() {
     try {
       Class.forName("com.mysql.cj.jdbc.Driver");
-      ResultSet rs = statement.executeQuery("SELECT COUNT(id) AS id FROM Todolist_" + TodoClass.getNameBD());
+      ResultSet rs = statement.executeQuery("SELECT COUNT(id) AS id FROM Todolist_" + TodoClass.getNameDB());
 
       if (rs.next()) {
         return rs.getInt(1);
@@ -53,16 +53,16 @@ public class TodoClassTest extends TestCase {
   }
 
   public void testaddText() throws Exception {
-    String query3 = "DELETE FROM Todolist_" + TodoClass.getNameBD() + " WHERE id = 1";
+    String query3 = "DELETE FROM Todolist_" + TodoClass.getNameDB() + " WHERE id = 1";
     PreparedStatement preparedStmts = conn.prepareStatement(query3);
     preparedStmts.executeUpdate(query3);
     String command = "Привет  ";
     String todoText = command.trim();
     Date dateNow = new Date();
-    String encodedString = Base64Class.encrypt(TodoClass.getNameBD(), todoText);
+    String encodedString = Base64Class.encrypt(TodoClass.getNameDB(), todoText);
     SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
     String dateADD = formatForDateNow.format(dateNow);
-    String query = "INSERT INTO Todolist_" + TodoClass.getNameBD() + " (id, text, time)" + " values (?, ?, ?)";
+    String query = "INSERT INTO Todolist_" + TodoClass.getNameDB() + " (id, text, time)" + " values (?, ?, ?)";
     PreparedStatement preparedStmt = conn.prepareStatement(query);
     preparedStmt.setInt(1, num() + 1); // Получаем "длину" таблицы и прибавляем 1
     preparedStmt.setString(2, encodedString);
@@ -70,12 +70,12 @@ public class TodoClassTest extends TestCase {
     preparedStmt.execute(); //Записываем данные в БД
     //conn.close();
 
-    String sql = "SELECT text FROM Todolist_" + TodoClass.getNameBD() + " ORDER BY id ASC";
+    String sql = "SELECT text FROM Todolist_" + TodoClass.getNameDB() + " ORDER BY id ASC";
     ResultSet rs = statement.executeQuery(sql);
 
     while (rs.next()) {
       String text = rs.getString("text");
-      String decodedString = Base64Class.decrypt(TodoClass.getNameBD(), text);
+      String decodedString = Base64Class.decrypt(TodoClass.getNameDB(), text);
       assertEquals(decodedString, todoText);
     }
     todoClass.deleteAll("удалить все");

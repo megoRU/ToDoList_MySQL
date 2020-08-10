@@ -47,7 +47,7 @@ public class TodoClass extends JFrame {
   private static final String USER = "admin_todolist";
   private static final String PASS = "B0*cg1k0";
 
-  public static String getNameBD() {
+  public static String getNameDB() {
     return nameBD;
   }
 
@@ -108,7 +108,7 @@ public class TodoClass extends JFrame {
       Date dateNow = new Date();
       SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
       String dateADD = formatForDateNow.format(dateNow);
-      String query = "INSERT INTO Todolist_" + getNameBD() + " (id, text, time)" + " values (?, ?, ?)";
+      String query = "INSERT INTO Todolist_" + getNameDB() + " (id, text, time)" + " values (?, ?, ?)";
       PreparedStatement preparedStmt = conn.prepareStatement(query);
       String encodedString = Base64Class.encrypt(CPUid(), todoText);
       preparedStmt.setInt(1, num() + 1); // Получаем "длину" таблицы и прибавляем 1
@@ -130,7 +130,7 @@ public class TodoClass extends JFrame {
       //Нужно проверить + дописать для секунд
       SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
       String dateADD = formatForDateNow.format(dateNow);
-      String query = "INSERT INTO Todolist_" + getNameBD() + " (id, text, time)" + " values (?, ?, ?)";
+      String query = "INSERT INTO Todolist_" + getNameDB() + " (id, text, time)" + " values (?, ?, ?)";
       PreparedStatement preparedStmt = conn.prepareStatement(query);
       String encodedString = Base64Class.encrypt(CPUid(), todoText[1]);
       preparedStmt.setInt(1, num() + 1); // Получаем "длину" таблицы и прибавляем 1
@@ -150,7 +150,7 @@ public class TodoClass extends JFrame {
   public int num() {
     try {
       Statement statement = conn.createStatement();
-      ResultSet resultSet = statement.executeQuery("SELECT COUNT(id) AS id FROM Todolist_" + getNameBD());
+      ResultSet resultSet = statement.executeQuery("SELECT COUNT(id) AS id FROM Todolist_" + getNameDB());
       if (resultSet.next()) {
         return resultSet.getInt(1);
       }
@@ -179,7 +179,7 @@ public class TodoClass extends JFrame {
         Date dateNow = new Date();
         SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
         String dateADD = formatForDateNow.format(dateNow);
-        String query = "INSERT INTO Todolist_" + getNameBD() + " (id, text, time)" + " values (?, ?, ?)";
+        String query = "INSERT INTO Todolist_" + getNameDB() + " (id, text, time)" + " values (?, ?, ?)";
         PreparedStatement preparedStmt = conn.prepareStatement(query);
         String encodedString = Base64Class.encrypt(CPUid(), todoTextAddToIndex);
         preparedStmt.setInt(1, addToIndex2);
@@ -202,7 +202,7 @@ public class TodoClass extends JFrame {
     String indexText = commandArray[1];
     int addToIndex = Integer.parseInt(indexText);
     try {
-      String query = "update Todolist_" + getNameBD() + " SET text = ? WHERE id = ?";
+      String query = "update Todolist_" + getNameDB() + " SET text = ? WHERE id = ?";
       PreparedStatement preparedStmt = conn.prepareStatement(query);
       String encodedString = Base64Class.encrypt(CPUid(), todoTextEdit);
       preparedStmt.setInt(2, addToIndex);
@@ -220,7 +220,7 @@ public class TodoClass extends JFrame {
       System.err.println("Заметок нет! Зачем их удалять :)");
     } else if (command.equals(COMMAND_DELETE_ALL) || command.equals(COMMAND_DELETE_ALL_RU)) {
       try {
-        String query3 = "DELETE FROM Todolist_" + getNameBD() + " WHERE id";
+        String query3 = "DELETE FROM Todolist_" + getNameDB() + " WHERE id";
         PreparedStatement preparedStmt = conn.prepareStatement(query3);
         preparedStmt.executeUpdate(query3);
         System.err.println("Заметки удалены!");
@@ -236,8 +236,8 @@ public class TodoClass extends JFrame {
     int indexRemove = Integer.parseInt(todoTextDelete);
     int indexReSetId = Integer.parseInt(todoTextDelete);
     try {
-      String query3 = "DELETE FROM Todolist_" + getNameBD() + " WHERE id = ?";
-      String query4 = "UPDATE Todolist_" + getNameBD() +  " SET id = id - 1 WHERE id >= ?";
+      String query3 = "DELETE FROM Todolist_" + getNameDB() + " WHERE id = ?";
+      String query4 = "UPDATE Todolist_" + getNameDB() +  " SET id = id - 1 WHERE id >= ?";
       PreparedStatement preparedStmt = conn.prepareStatement(query3);
       PreparedStatement preparedStmt2 = conn.prepareStatement(query4);
       preparedStmt.setInt(1, indexRemove);

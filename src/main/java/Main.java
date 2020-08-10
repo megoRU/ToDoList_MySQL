@@ -319,7 +319,7 @@ public class Main extends JFrame  {
   public int num() {
     try {
       Class.forName("com.mysql.cj.jdbc.Driver");
-      ResultSet rs = statement.executeQuery("SELECT COUNT(id) AS id FROM Todolist_" + TodoClass.getNameBD());
+      ResultSet rs = statement.executeQuery("SELECT COUNT(id) AS id FROM Todolist_" + TodoClass.getNameDB());
 
       if (rs.next()) {
         return rs.getInt(1);
@@ -337,7 +337,7 @@ public class Main extends JFrame  {
     } else {
       try {
         //Получаем данные и выводим
-        String sql = "SELECT id, text, time FROM Todolist_" + TodoClass.getNameBD() + " ORDER BY id ASC";
+        String sql = "SELECT id, text, time FROM Todolist_" + TodoClass.getNameDB() + " ORDER BY id ASC";
         ResultSet rs = statement.executeQuery(sql);
         //  jTextArea1.append("Список всех заметок: ");
         while (rs.next()) {
