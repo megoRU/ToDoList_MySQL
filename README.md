@@ -1,3 +1,5 @@
+![GitHub All Releases](https://img.shields.io/github/downloads/megoRU/ToDoList_MySQL/total)
+
 # Java ToDoList MySQL
 
 ![Image description](image.png)
