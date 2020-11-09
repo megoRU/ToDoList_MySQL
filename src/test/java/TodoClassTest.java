@@ -10,7 +10,7 @@ import junit.framework.TestCase;
 
 public class TodoClassTest extends TestCase {
 
-  private static final String CONN = "jdbc:mysql://95.181.157.159:3306/admin_todolist?useSSL=false&serverTimezone=UTC&characterEncoding=utf8";
+  private static final String CONN = "jdbc:mysql://45.138.72.66:3306/admin_todolist?useSSL=false&serverTimezone=UTC&characterEncoding=utf8";
   private static final String USER = "admin_todolist";
   private static final String PASS = "B0*cg1k0";
   private final Connection conn = DriverManager.getConnection(CONN, USER, PASS);
@@ -50,7 +50,7 @@ public class TodoClassTest extends TestCase {
     String query3 = "DELETE FROM Todolist_" + TodoClass.getNameDB() + " WHERE id = 1";
     PreparedStatement preparedStmts = conn.prepareStatement(query3);
     preparedStmts.executeUpdate(query3);
-    String command = "Привет  ";
+    String command = "Hello ";
     String todoText = command.trim();
     Date dateNow = new Date();
     String encodedString = Base64Class.encrypt(TodoClass.getNameDB(), todoText);

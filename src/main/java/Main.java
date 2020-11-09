@@ -20,7 +20,7 @@ import oshi.SystemInfo;
 
 public class Main extends JFrame  {
 
-  private static final String CONN = "jdbc:mysql://95.181.157.159:3306/admin_todolist?useSSL=false&serverTimezone=UTC&characterEncoding=utf8";
+  private static final String CONN = "jdbc:mysql://45.138.72.66:3306/admin_todolist?useSSL=false&serverTimezone=UTC&characterEncoding=utf8";
   private static final String USER = "admin_todolist";
   private static final String PASS = "B0*cg1k0";
   private final Connection conn = DriverManager.getConnection(CONN, USER, PASS);
@@ -324,7 +324,7 @@ public class Main extends JFrame  {
       if (rs.next()) {
         return rs.getInt(1);
       }
-      rs.close();
+      //rs.close();
     } catch (Exception ignored) {
     }
     return 0;
@@ -350,7 +350,7 @@ public class Main extends JFrame  {
           //Вывод данных
           jTextArea1.append(id + ". " + utf8String + " | Дата создания: " + time + "\n");
         }
-        rs.close();
+        //rs.close();
       //  conn.close();
       //  statement.close();
       } catch (Exception e) {
